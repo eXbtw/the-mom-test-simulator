@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:full": "vercel dev",
+    "dev:api": "node --env-file=.env server/dev-api.js",
+    "dev:full": "concurrently -n api,web -c blue,green \"npm:dev:api\" \"npm:dev\"",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"
@@ -21,6 +22,7 @@
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.1.0",
     "autoprefixer": "^10.5.4",
+    "concurrently": "^10.0.5",
     "oxlint": "^1.79.0",
     "postcss": "^8.5.26",
     "tailwindcss": "^4.3.3",
