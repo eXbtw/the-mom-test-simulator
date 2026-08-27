@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import AppShell from './components/AppShell'
 import Onboarding from './screens/Onboarding'
 import Workspace from './screens/Workspace'
 import Results from './screens/Results'
@@ -12,15 +13,16 @@ function App() {
     setResult(null)
   }
 
+  let screen
   if (!persona) {
-    return <Onboarding onStart={setPersona} />
+    screen = <Onboarding onStart={setPersona} />
+  } else if (result) {
+    screen = <Results result={result} onRestart={handleRestart} />
+  } else {
+    screen = <Workspace persona={persona} onFinish={setResult} />
   }
 
-  if (result) {
-    return <Results result={result} onRestart={handleRestart} />
-  }
-
-  return <Workspace persona={persona} onFinish={setResult} />
+  return <AppShell>{screen}</AppShell>
 }
 
 export default App

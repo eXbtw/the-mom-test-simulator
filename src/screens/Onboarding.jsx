@@ -40,7 +40,7 @@ export default function Onboarding({ onStart }) {
   }
 
   return (
-    <div className="mx-auto flex h-screen w-full max-w-2xl flex-col justify-center px-6 py-10">
+    <div className="mx-auto flex h-full w-full max-w-2xl flex-col justify-center overflow-y-auto px-6 py-10">
       <header className="mb-8 text-center">
         <h1 className="text-2xl font-semibold text-gray-900">The Mom Test Simulator</h1>
         <p className="mt-2 text-sm text-gray-500">
