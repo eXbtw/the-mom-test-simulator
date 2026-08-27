@@ -3,8 +3,7 @@ import ChatPanel from '../components/ChatPanel'
 import ScoreWidget from '../components/ScoreWidget'
 import InsightChips from '../components/InsightChips'
 import AlertBox from '../components/AlertBox'
-import { evaluateMessage } from '../mock/evaluator'
-import { getPersonaReply } from '../mock/persona'
+import { fetchEvaluation, fetchPersonaReply } from '../services/aiClient'
 import { gradeForScore } from '../utils/grading'
 
 const MISTAKE_TYPES = new Set(['hypothetical', 'leading_question', 'pitching'])
@@ -34,42 +33,53 @@ export default function Workspace({ persona, onFinish }) {
   const [isThinking, setIsThinking] = useState(false)
   const [mistakes, setMistakes] = useState([])
 
-  const handleSend = (text) => {
+  const handleSend = async (text) => {
+    const history = messages.map((m) => ({ role: m.role, text: m.text }))
     setMessages((prev) => [...prev, { id: nextId(), role: 'user', text }])
-
-    const result = evaluateMessage(text)
-
-    if (result) {
-      setScore((prev) => Math.max(0, Math.min(100, prev + result.delta)))
-      setAlert({ type: result.type, message: result.message })
-      setTimeout(() => setAlert(null), 4000)
-
-      if (result.type === 'good_question') {
-        setInsights((prev) => {
-          const idx = prev.findIndex((i) => !i.revealed)
-          if (idx === -1) return prev
-          const next = [...prev]
-          next[idx] = { ...next[idx], revealed: true }
-          return next
-        })
-      }
-
-      if (MISTAKE_TYPES.has(result.type)) {
-        setMistakes((prev) => [
-          ...prev,
-          { id: nextId(), question: text, why: result.message, suggestion: result.suggestion },
-        ])
-      }
-    }
-
     setIsThinking(true)
-    setTimeout(() => {
+
+    try {
+      const [result, reply] = await Promise.all([
+        fetchEvaluation(text),
+        fetchPersonaReply(persona, history, text),
+      ])
+
+      if (result) {
+        setScore((prev) => Math.max(0, Math.min(100, prev + result.delta)))
+        setAlert({ type: result.type, message: result.message })
+        setTimeout(() => setAlert(null), 4000)
+
+        if (result.type === 'good_question') {
+          setInsights((prev) => {
+            const idx = prev.findIndex((i) => !i.revealed)
+            if (idx === -1) return prev
+            const next = [...prev]
+            next[idx] = { ...next[idx], revealed: true }
+            return next
+          })
+        }
+
+        if (MISTAKE_TYPES.has(result.type)) {
+          setMistakes((prev) => [
+            ...prev,
+            { id: nextId(), question: text, why: result.message, suggestion: result.suggestion },
+          ])
+        }
+      }
+
+      setMessages((prev) => [...prev, { id: nextId(), role: 'ai', text: reply }])
+    } catch (err) {
       setMessages((prev) => [
         ...prev,
-        { id: nextId(), role: 'ai', text: getPersonaReply(result?.type) },
+        {
+          id: nextId(),
+          role: 'ai',
+          text: `⚠️ Не удалось получить ответ (${err.message}). Проверьте API-ключ и повторите попытку.`,
+        },
       ])
+    } finally {
       setIsThinking(false)
-    }, 700)
+    }
   }
 
   const handleFinish = () => {

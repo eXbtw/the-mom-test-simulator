@@ -10,20 +10,38 @@
 
 ## Стек
 
-- React + Vite
-- Tailwind CSS v4
-- lucide-react
+- React + Vite, Tailwind CSS v4, lucide-react
+- Vercel Serverless Functions (`/api`) как прокси к Google Gemini —
+  API-ключ живёт только на сервере и не попадает в клиентский код
 
 ## Статус
 
-MVP в разработке. Сейчас реализован Frame 2 (рабочий экран: чат +
-live-дашборд со Score Widget) на моках, без реальных вызовов LLM.
-Следующие шаги — Frame 1 (онбординг), Frame 3 (итоги сессии) и
-интеграция с Google Gemini через serverless-прокси.
+Все три экрана из PRD реализованы: онбординг (выбор персоны) →
+рабочий экран (чат + live-дашборд) → итоги сессии с разбором ошибок.
+Оба AI-агента (Персона и Аудитор) подключены к Gemini через
+`/api/persona` и `/api/evaluator`.
 
 ## Разработка
+
+Только фронтенд (без вызовов AI — запросы к `/api/*` будут падать):
 
 ```bash
 npm install
 npm run dev
 ```
+
+Полноценный локальный запуск с работающими AI-эндпоинтами (через Vercel CLI):
+
+1. Получите бесплатный ключ в [Google AI Studio](https://aistudio.google.com/apikey).
+2. Скопируйте `.env.example` в `.env` и впишите `GEMINI_API_KEY`.
+3. Запустите:
+
+```bash
+npm run dev:full
+```
+
+## Деплой
+
+Проект деплоится на [Vercel](https://vercel.com) как есть — Vite-фронтенд
+и `/api` определяются автоматически. Не забудьте добавить `GEMINI_API_KEY`
+в Environment Variables проекта на Vercel.
