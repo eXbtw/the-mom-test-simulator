@@ -5,6 +5,9 @@ import InsightChips from '../components/InsightChips'
 import AlertBox from '../components/AlertBox'
 import { evaluateMessage } from '../mock/evaluator'
 import { getPersonaReply } from '../mock/persona'
+import { gradeForScore } from '../utils/grading'
+
+const MISTAKE_TYPES = new Set(['hypothetical', 'leading_question', 'pitching'])
 
 const INITIAL_INSIGHTS = [
   { id: 'accident_downtime', label: 'Простои из-за ДТП' },
@@ -15,7 +18,7 @@ const INITIAL_INSIGHTS = [
 let messageId = 0
 const nextId = () => ++messageId
 
-export default function Workspace({ persona }) {
+export default function Workspace({ persona, onFinish }) {
   const [messages, setMessages] = useState([
     {
       id: nextId(),
@@ -29,6 +32,7 @@ export default function Workspace({ persona }) {
   )
   const [alert, setAlert] = useState(null)
   const [isThinking, setIsThinking] = useState(false)
+  const [mistakes, setMistakes] = useState([])
 
   const handleSend = (text) => {
     setMessages((prev) => [...prev, { id: nextId(), role: 'user', text }])
@@ -49,6 +53,13 @@ export default function Workspace({ persona }) {
           return next
         })
       }
+
+      if (MISTAKE_TYPES.has(result.type)) {
+        setMistakes((prev) => [
+          ...prev,
+          { id: nextId(), question: text, why: result.message, suggestion: result.suggestion },
+        ])
+      }
     }
 
     setIsThinking(true)
@@ -61,13 +72,32 @@ export default function Workspace({ persona }) {
     }, 700)
   }
 
+  const handleFinish = () => {
+    onFinish({
+      score,
+      grade: gradeForScore(score),
+      mistakes,
+      insightsRevealed: insights.filter((i) => i.revealed).length,
+      insightsTotal: insights.length,
+    })
+  }
+
   return (
     <div className="flex h-screen w-screen flex-col bg-gray-50">
-      <header className="border-b border-gray-200 bg-white px-6 py-3">
-        <h1 className="text-lg font-semibold text-gray-900">The Mom Test Simulator</h1>
-        <p className="text-sm text-gray-500">
-          {persona.role} · {persona.difficulty}
-        </p>
+      <header className="flex items-center justify-between border-b border-gray-200 bg-white px-6 py-3">
+        <div>
+          <h1 className="text-lg font-semibold text-gray-900">The Mom Test Simulator</h1>
+          <p className="text-sm text-gray-500">
+            {persona.role} · {persona.difficulty}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={handleFinish}
+          className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+        >
+          Завершить интервью
+        </button>
       </header>
 
       <main className="flex flex-1 overflow-hidden">
