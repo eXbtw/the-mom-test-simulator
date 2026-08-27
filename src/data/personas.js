@@ -115,4 +115,54 @@ export const PERSONAS = [
       { id: 'no_safety_net', label: 'Нет подушки безопасности' },
     ],
   },
+  {
+    id: 'hr-director',
+    branch: 'b2b',
+    category: {
+      id: 'hr-recruiting',
+      label: 'HR и рекрутинг',
+      tagline: 'Наём, текучка новичков, онбординг',
+    },
+    name: 'Дмитрий Некрасов',
+    role: 'HR-директор в growing tech-компании (120 человек)',
+    difficulty: 'Medium',
+    description:
+      'Компания быстро растёт, наём не успевает за планом. Новые сотрудники часто уходят в первые три месяца — онбординг слабый, руки не доходят его выстроить.',
+    trafficSource: {
+      label: 'Реферал от коллеги',
+      prompt: 'Коллега порекомендовал этот разговор — ты открыт и настроен доброжелательно, охотно делишься проблемами найма.',
+    },
+    openingLine: 'Привет! Коллега сказал, что ты интервью собираешь про наём — у меня наболело, готов рассказать.',
+    difficultyPrompt: DIFFICULTY_PROMPTS.Medium,
+    insights: [
+      { id: 'slow_hiring', label: 'Долгий процесс найма' },
+      { id: 'early_turnover', label: 'Текучка в первые 3 месяца' },
+      { id: 'weak_onboarding', label: 'Слабый онбординг' },
+    ],
+  },
+  {
+    id: 'freelance-pm',
+    branch: 'b2c',
+    category: {
+      id: 'productivity',
+      label: 'Продуктивность и привычки',
+      tagline: 'Прокрастинация, приоритеты, выгорание',
+    },
+    name: 'Мария',
+    role: '26 лет, менеджер проектов, фрилансит по вечерам',
+    difficulty: 'Medium',
+    description:
+      'Работает в найме днём и берёт фриланс-проекты вечерами. Постоянно прокрастинирует, путается в приоритетах и выгорает от многозадачности.',
+    trafficSource: {
+      label: 'Органика (нашла в App Store)',
+      prompt: 'Сама нашла приложение для интервью в поиске — настроена нейтрально-любопытно, отвечает по существу, но не спешит раскрываться без повода.',
+    },
+    openingLine: 'Привет, да, увидела ваше приложение в App Store, стало интересно. Что хотите узнать?',
+    difficultyPrompt: DIFFICULTY_PROMPTS.Medium,
+    insights: [
+      { id: 'evening_procrastination', label: 'Прокрастинация вечером' },
+      { id: 'priority_confusion', label: 'Путаница в приоритетах' },
+      { id: 'multitask_burnout', label: 'Выгорание от многозадачности' },
+    ],
+  },
 ]

@@ -3,10 +3,12 @@ import { ArrowLeft } from 'lucide-react'
 import { BRANCHES, PERSONAS } from '../data/personas'
 import SelectionCard from '../components/SelectionCard'
 import PersonaCard from '../components/PersonaCard'
+import CustomPersonaForm from '../components/CustomPersonaForm'
 
 const STEP_TITLES = {
   branch: 'С кем тренируемся?',
   category: 'Выберите направление',
+  custom: 'Своя сфера',
   confirm: 'Ваш респондент',
 }
 
@@ -14,6 +16,7 @@ export default function Onboarding({ onStart }) {
   const [step, setStep] = useState('branch')
   const [branchId, setBranchId] = useState(null)
   const [persona, setPersona] = useState(null)
+  const [confirmOrigin, setConfirmOrigin] = useState('category')
 
   const categories = branchId
     ? PERSONAS.filter((p) => p.branch === branchId)
@@ -26,16 +29,23 @@ export default function Onboarding({ onStart }) {
 
   const handleCategorySelect = (selectedPersona) => {
     setPersona(selectedPersona)
+    setConfirmOrigin('category')
+    setStep('confirm')
+  }
+
+  const handleGenerated = (generatedPersona) => {
+    setPersona(generatedPersona)
+    setConfirmOrigin('custom')
     setStep('confirm')
   }
 
   const goBack = () => {
-    if (step === 'category') {
+    if (step === 'category' || step === 'custom') {
       setBranchId(null)
       setStep('branch')
     } else if (step === 'confirm') {
       setPersona(null)
-      setStep('category')
+      setStep(confirmOrigin)
     }
   }
 
@@ -86,7 +96,16 @@ export default function Onboarding({ onStart }) {
               onSelect={() => handleCategorySelect(p)}
             />
           ))}
+          <SelectionCard
+            title="✏️ Своя сфера"
+            subtitle="Опишите нишу своими словами — респондента сгенерирует AI"
+            onSelect={() => setStep('custom')}
+          />
         </div>
+      )}
+
+      {step === 'custom' && (
+        <CustomPersonaForm branch={branchId} onGenerated={handleGenerated} />
       )}
 
       {step === 'confirm' && persona && (

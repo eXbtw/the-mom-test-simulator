@@ -20,3 +20,8 @@ export async function fetchEvaluation(message) {
   const data = await postJson('/api/evaluator', { message })
   return data.type === 'neutral' ? null : data
 }
+
+export async function generatePersona(branch, description) {
+  const data = await postJson('/api/persona-builder', { branch, description })
+  return data.persona
+}

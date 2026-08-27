@@ -5,10 +5,12 @@
 import http from 'node:http'
 import personaHandler from '../api/persona.js'
 import evaluatorHandler from '../api/evaluator.js'
+import personaBuilderHandler from '../api/persona-builder.js'
 
 const ROUTES = {
   '/api/persona': personaHandler,
   '/api/evaluator': evaluatorHandler,
+  '/api/persona-builder': personaBuilderHandler,
 }
 
 function addResponseHelpers(res) {
