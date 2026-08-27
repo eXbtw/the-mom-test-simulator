@@ -8,26 +8,16 @@ import { gradeForScore } from '../utils/grading'
 
 const MISTAKE_TYPES = new Set(['hypothetical', 'leading_question', 'pitching'])
 
-const INITIAL_INSIGHTS = [
-  { id: 'accident_downtime', label: 'Простои из-за ДТП' },
-  { id: 'insurance_payouts', label: 'Страховые выплаты' },
-  { id: 'driver_turnover', label: 'Текучка водителей' },
-]
-
 let messageId = 0
 const nextId = () => ++messageId
 
 export default function Workspace({ persona, onFinish }) {
   const [messages, setMessages] = useState([
-    {
-      id: nextId(),
-      role: 'ai',
-      text: 'Здравствуйте! Да, управляю автопарком уже семь лет. Чем могу помочь?',
-    },
+    { id: nextId(), role: 'ai', text: persona.openingLine },
   ])
   const [score, setScore] = useState(50)
   const [insights, setInsights] = useState(
-    INITIAL_INSIGHTS.map((i) => ({ ...i, revealed: false })),
+    persona.insights.map((i) => ({ ...i, revealed: false })),
   )
   const [alert, setAlert] = useState(null)
   const [isThinking, setIsThinking] = useState(false)
@@ -98,7 +88,7 @@ export default function Workspace({ persona, onFinish }) {
         <div>
           <h1 className="text-lg font-semibold text-gray-900">The Mom Test Simulator</h1>
           <p className="text-sm text-gray-500">
-            {persona.role} · {persona.difficulty}
+            {persona.role} · {persona.difficulty} · {persona.trafficSource.label}
           </p>
         </div>
         <button

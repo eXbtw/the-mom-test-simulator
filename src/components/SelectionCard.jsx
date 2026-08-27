@@ -1,0 +1,12 @@
+export default function SelectionCard({ title, subtitle, onSelect }) {
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      className="w-full rounded-xl border border-gray-200 bg-white p-5 text-left transition-colors hover:border-blue-400 hover:bg-blue-50"
+    >
+      <h3 className="font-semibold text-gray-900">{title}</h3>
+      {subtitle && <p className="mt-1 text-sm text-gray-500">{subtitle}</p>}
+    </button>
+  )
+}

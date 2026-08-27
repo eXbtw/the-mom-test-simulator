@@ -1,10 +1,43 @@
 import { useState } from 'react'
-import { PERSONAS } from '../data/personas'
+import { ArrowLeft } from 'lucide-react'
+import { BRANCHES, PERSONAS } from '../data/personas'
+import SelectionCard from '../components/SelectionCard'
 import PersonaCard from '../components/PersonaCard'
 
+const STEP_TITLES = {
+  branch: 'С кем тренируемся?',
+  category: 'Выберите направление',
+  confirm: 'Ваш респондент',
+}
+
 export default function Onboarding({ onStart }) {
-  const [selectedId, setSelectedId] = useState(PERSONAS[0]?.id ?? null)
-  const selectedPersona = PERSONAS.find((p) => p.id === selectedId)
+  const [step, setStep] = useState('branch')
+  const [branchId, setBranchId] = useState(null)
+  const [persona, setPersona] = useState(null)
+
+  const categories = branchId
+    ? PERSONAS.filter((p) => p.branch === branchId)
+    : []
+
+  const handleBranchSelect = (id) => {
+    setBranchId(id)
+    setStep('category')
+  }
+
+  const handleCategorySelect = (selectedPersona) => {
+    setPersona(selectedPersona)
+    setStep('confirm')
+  }
+
+  const goBack = () => {
+    if (step === 'category') {
+      setBranchId(null)
+      setStep('branch')
+    } else if (step === 'confirm') {
+      setPersona(null)
+      setStep('category')
+    }
+  }
 
   return (
     <div className="mx-auto flex h-screen w-full max-w-2xl flex-col justify-center px-6 py-10">
@@ -16,25 +49,58 @@ export default function Onboarding({ onStart }) {
         </p>
       </header>
 
-      <div className="space-y-3">
-        {PERSONAS.map((persona) => (
-          <PersonaCard
-            key={persona.id}
-            persona={persona}
-            selected={persona.id === selectedId}
-            onSelect={setSelectedId}
-          />
-        ))}
+      <div className="mb-4 flex items-center gap-2">
+        {step !== 'branch' && (
+          <button
+            type="button"
+            onClick={goBack}
+            className="flex items-center justify-center rounded-lg p-1.5 text-gray-500 hover:bg-gray-100"
+            aria-label="Назад"
+          >
+            <ArrowLeft size={18} />
+          </button>
+        )}
+        <h2 className="text-sm font-semibold text-gray-700">{STEP_TITLES[step]}</h2>
       </div>
 
-      <button
-        type="button"
-        disabled={!selectedPersona}
-        onClick={() => selectedPersona && onStart(selectedPersona)}
-        className="mt-8 w-full rounded-lg bg-blue-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        Начать интервью
-      </button>
+      {step === 'branch' && (
+        <div className="space-y-3">
+          {BRANCHES.map((branch) => (
+            <SelectionCard
+              key={branch.id}
+              title={branch.label}
+              subtitle={branch.description}
+              onSelect={() => handleBranchSelect(branch.id)}
+            />
+          ))}
+        </div>
+      )}
+
+      {step === 'category' && (
+        <div className="space-y-3">
+          {categories.map((p) => (
+            <SelectionCard
+              key={p.id}
+              title={p.category.label}
+              subtitle={p.category.tagline}
+              onSelect={() => handleCategorySelect(p)}
+            />
+          ))}
+        </div>
+      )}
+
+      {step === 'confirm' && persona && (
+        <>
+          <PersonaCard persona={persona} />
+          <button
+            type="button"
+            onClick={() => onStart(persona)}
+            className="mt-6 w-full rounded-lg bg-blue-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+          >
+            Начать интервью
+          </button>
+        </>
+      )}
     </div>
   )
 }

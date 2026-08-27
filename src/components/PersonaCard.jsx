@@ -4,17 +4,9 @@ const DIFFICULTY_STYLES = {
   Hard: 'bg-red-100 text-red-700',
 }
 
-export default function PersonaCard({ persona, selected, onSelect }) {
+export default function PersonaCard({ persona }) {
   return (
-    <button
-      type="button"
-      onClick={() => onSelect(persona.id)}
-      className={`w-full rounded-xl border p-5 text-left transition-colors ${
-        selected
-          ? 'border-blue-500 bg-blue-50 ring-1 ring-blue-500'
-          : 'border-gray-200 bg-white hover:border-gray-300'
-      }`}
-    >
+    <div className="w-full rounded-xl border border-gray-200 bg-white p-5 text-left">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h3 className="font-semibold text-gray-900">{persona.name}</h3>
@@ -29,6 +21,11 @@ export default function PersonaCard({ persona, selected, onSelect }) {
         </span>
       </div>
       <p className="mt-3 text-sm text-gray-500">{persona.description}</p>
-    </button>
+      <div className="mt-4 flex items-center gap-2 border-t border-gray-100 pt-3 text-xs text-gray-500">
+        <span className="rounded-full bg-gray-100 px-2.5 py-1 font-medium text-gray-600">
+          Источник: {persona.trafficSource.label}
+        </span>
+      </div>
+    </div>
   )
 }
