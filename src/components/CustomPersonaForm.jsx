@@ -25,7 +25,7 @@ export default function CustomPersonaForm({ branch, onGenerated }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
-      <label className="block text-sm text-gray-600">
+      <label className="block text-sm text-gray-600 dark:text-gray-400">
         Опишите сферу деятельности респондента
         <textarea
           value={description}
@@ -33,11 +33,11 @@ export default function CustomPersonaForm({ branch, onGenerated }) {
           placeholder="Например: розничный магазин цветов, стоматологическая клиника, интернет-магазин косметики…"
           rows={3}
           disabled={isLoading}
-          className="mt-2 w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500 disabled:bg-gray-50"
+          className="mt-2 w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500 disabled:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:disabled:bg-gray-900"
         />
       </label>
 
-      {error && <p className="text-sm text-red-600">Не удалось сгенерировать: {error}</p>}
+      {error && <p className="text-sm text-red-600 dark:text-red-400">Не удалось сгенерировать: {error}</p>}
 
       <button
         type="submit"

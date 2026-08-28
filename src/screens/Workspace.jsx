@@ -4,6 +4,9 @@ import ScoreWidget from '../components/ScoreWidget'
 import ScoreDeltaPopup from '../components/ScoreDeltaPopup'
 import InsightChips from '../components/InsightChips'
 import AlertBox from '../components/AlertBox'
+import PersonaAvatar from '../components/PersonaAvatar'
+import PersonaContextPanel from '../components/PersonaContextPanel'
+import ThemeToggle from '../components/ThemeToggle'
 import { fetchEvaluation, fetchPersonaReply } from '../services/aiClient'
 import { gradeForScore } from '../utils/grading'
 
@@ -91,43 +94,57 @@ export default function Workspace({ persona, onFinish }) {
   }
 
   return (
-    <div className="flex h-full w-full flex-col bg-gray-50">
-      <header className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-gray-200 bg-white px-4 py-2.5 md:px-6 md:py-3">
-        <div className="min-w-0">
-          <h1 className="text-base font-semibold text-gray-900 md:text-lg">The Mom Test Simulator</h1>
-          <p className="truncate text-xs text-gray-500 md:text-sm">
-            {persona.role} · {persona.difficulty} · {persona.trafficSource.label}
-          </p>
+    <div className="flex h-full w-full flex-col bg-gray-50 dark:bg-gray-900">
+      <header className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-gray-200 bg-white px-4 py-2.5 dark:border-gray-800 dark:bg-gray-900 md:px-6 md:py-3">
+        <div className="flex min-w-0 items-center gap-3">
+          <PersonaAvatar categoryId={persona.category?.id} size="sm" />
+          <div className="min-w-0">
+            <h1 className="text-base font-semibold text-gray-900 dark:text-gray-100 md:text-lg">
+              The Mom Test Simulator
+            </h1>
+            <p className="truncate text-xs text-gray-500 dark:text-gray-400 md:text-sm">
+              {persona.role} · {persona.difficulty} · {persona.trafficSource.label}
+            </p>
+          </div>
         </div>
-        <button
-          type="button"
-          onClick={handleFinish}
-          disabled={!started}
-          className="shrink-0 rounded-lg border border-gray-300 px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 md:px-3 md:text-sm"
-        >
-          Завершить интервью
-        </button>
+        <div className="flex shrink-0 items-center gap-2">
+          <ThemeToggle />
+          <button
+            type="button"
+            onClick={handleFinish}
+            disabled={!started}
+            className="rounded-lg border border-gray-300 px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 md:px-3 md:text-sm"
+          >
+            Завершить интервью
+          </button>
+        </div>
       </header>
 
       <main className="flex flex-1 flex-col overflow-hidden md:flex-row">
-        <aside className="flex shrink-0 items-center gap-4 overflow-x-auto border-b border-gray-200 bg-white px-4 py-3 md:order-2 md:w-72 md:flex-col md:items-stretch md:gap-6 md:overflow-y-auto md:overflow-x-visible md:border-b-0 md:border-l md:bg-transparent md:p-6">
-          <div className="relative flex shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-white px-3 py-2 md:w-full md:flex-col md:px-0 md:py-6">
+        <PersonaContextPanel persona={persona} />
+
+        <aside className="flex shrink-0 items-center gap-4 overflow-x-auto border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-900 md:order-3 md:w-72 md:flex-col md:items-stretch md:gap-6 md:overflow-y-auto md:overflow-x-visible md:border-b-0 md:border-l md:bg-transparent md:p-6">
+          <div className="relative flex shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-white px-3 py-2 dark:border-gray-800 dark:bg-gray-900 md:w-full md:flex-col md:px-0 md:py-6">
             <ScoreDeltaPopup delta={scoreDelta} />
             <ScoreWidget score={score} />
           </div>
 
           <div className="min-w-0 flex-1 md:flex-none">
-            <h2 className="mb-2 hidden text-sm font-semibold text-gray-700 md:block">Выявленные инсайты</h2>
+            <h2 className="mb-2 hidden text-sm font-semibold text-gray-700 dark:text-gray-300 md:block">
+              Выявленные инсайты
+            </h2>
             <InsightChips insights={insights} />
           </div>
 
           <div className="hidden md:block">
-            <h2 className="mb-2 text-sm font-semibold text-gray-700">Подсказка аудитора</h2>
+            <h2 className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+              Подсказка аудитора
+            </h2>
             <AlertBox alert={alert} />
           </div>
         </aside>
 
-        <section className="relative min-h-0 flex-1 bg-white md:order-1 md:border-r md:border-gray-200">
+        <section className="relative min-h-0 flex-1 bg-white dark:bg-gray-900 md:order-2">
           <div className="pointer-events-none absolute inset-x-0 top-2 z-10 flex justify-center px-4 md:hidden">
             <div className="pointer-events-auto w-full max-w-sm">
               <AlertBox alert={alert} />
@@ -138,9 +155,10 @@ export default function Workspace({ persona, onFinish }) {
             <ChatPanel messages={messages} onSend={handleSend} isThinking={isThinking} />
           ) : (
             <div className="flex h-full flex-col items-center justify-center gap-4 px-8 text-center">
-              <p className="text-sm text-gray-500">
-                Сейчас вы позвоните: <span className="font-medium text-gray-700">{persona.name}</span>
-                , {persona.role.toLowerCase()}. Нажмите, чтобы начать разговор.
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Сейчас вы позвоните:{' '}
+                <span className="font-medium text-gray-700 dark:text-gray-300">{persona.name}</span>,{' '}
+                {persona.role.toLowerCase()}. Нажмите, чтобы начать разговор.
               </p>
               <button
                 type="button"

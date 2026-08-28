@@ -20,8 +20,8 @@ export default function ScoreWidget({ score }) {
           cy="60"
           r={RADIUS}
           fill="none"
-          stroke="#e5e7eb"
           strokeWidth="10"
+          className="stroke-gray-200 dark:stroke-gray-700"
         />
         <circle
           cx="60"
@@ -40,12 +40,12 @@ export default function ScoreWidget({ score }) {
           y="60"
           textAnchor="middle"
           dominantBaseline="central"
-          className="rotate-90 origin-center fill-gray-900 text-2xl font-semibold"
+          className="rotate-90 origin-center fill-gray-900 text-2xl font-semibold dark:fill-gray-100"
         >
           {clamped}
         </text>
       </svg>
-      <span className="hidden text-sm text-gray-500 md:block">Score</span>
+      <span className="hidden text-sm text-gray-500 dark:text-gray-400 md:block">Score</span>
     </div>
   )
 }

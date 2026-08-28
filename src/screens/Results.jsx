@@ -1,22 +1,27 @@
 import MistakeAccordion from '../components/MistakeAccordion'
+import ThemeToggle from '../components/ThemeToggle'
 
 export default function Results({ result, onRestart }) {
   const { score, grade, mistakes, insightsRevealed, insightsTotal } = result
 
   return (
     <div className="mx-auto flex h-full w-full max-w-2xl flex-col px-6 py-8">
+      <div className="mb-2 flex shrink-0 justify-end">
+        <ThemeToggle />
+      </div>
+
       <header className="mb-6 shrink-0 text-center">
-        <p className="text-sm text-gray-500">Итоги сессии</p>
-        <h1 className="mt-1 text-3xl font-semibold text-gray-900">
+        <p className="text-sm text-gray-500 dark:text-gray-400">Итоги сессии</p>
+        <h1 className="mt-1 text-3xl font-semibold text-gray-900 dark:text-gray-100">
           {score}/100 · {grade}
         </h1>
-        <p className="mt-2 text-sm text-gray-500">
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
           Раскрыто инсайтов: {insightsRevealed} из {insightsTotal}
         </p>
       </header>
 
       <section className="flex-1 overflow-y-auto">
-        <h2 className="mb-3 text-sm font-semibold text-gray-700">Разбор ошибок</h2>
+        <h2 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-300">Разбор ошибок</h2>
         <MistakeAccordion mistakes={mistakes} />
       </section>
 

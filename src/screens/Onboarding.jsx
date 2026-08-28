@@ -4,6 +4,7 @@ import { BRANCHES, PERSONAS } from '../data/personas'
 import SelectionCard from '../components/SelectionCard'
 import PersonaCard from '../components/PersonaCard'
 import CustomPersonaForm from '../components/CustomPersonaForm'
+import ThemeToggle from '../components/ThemeToggle'
 
 const STEP_TITLES = {
   branch: 'С кем тренируемся?',
@@ -51,9 +52,13 @@ export default function Onboarding({ onStart }) {
 
   return (
     <div className="mx-auto flex h-full w-full max-w-2xl flex-col justify-center overflow-y-auto px-6 py-10">
+      <div className="mb-2 flex justify-end">
+        <ThemeToggle />
+      </div>
+
       <header className="mb-8 text-center">
-        <h1 className="text-2xl font-semibold text-gray-900">The Mom Test Simulator</h1>
-        <p className="mt-2 text-sm text-gray-500">
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">The Mom Test Simulator</h1>
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
           Потренируйте проблемные интервью на AI-персоне и получите разбор ошибок
           по методологии «Спроси маму».
         </p>
@@ -64,13 +69,13 @@ export default function Onboarding({ onStart }) {
           <button
             type="button"
             onClick={goBack}
-            className="flex items-center justify-center rounded-lg p-1.5 text-gray-500 hover:bg-gray-100"
+            className="flex items-center justify-center rounded-lg p-1.5 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
             aria-label="Назад"
           >
             <ArrowLeft size={18} />
           </button>
         )}
-        <h2 className="text-sm font-semibold text-gray-700">{STEP_TITLES[step]}</h2>
+        <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{STEP_TITLES[step]}</h2>
       </div>
 
       {step === 'branch' && (
