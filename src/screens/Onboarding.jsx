@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowLeft, Briefcase, UserRound, Zap } from 'lucide-react'
+import { ArrowLeft, BookOpen, Briefcase, UserRound, Zap } from 'lucide-react'
 import { BRANCHES, PERSONAS } from '../data/personas'
 import SelectionCard from '../components/SelectionCard'
 import PersonaCard from '../components/PersonaCard'
@@ -22,7 +22,7 @@ const BRANCH_ICONS = {
   b2c: UserRound,
 }
 
-export default function Onboarding({ onStart }) {
+export default function Onboarding({ onStart, onShowRules }) {
   const [step, setStep] = useState('branch')
   const [branchId, setBranchId] = useState(null)
   const [persona, setPersona] = useState(null)
@@ -83,6 +83,16 @@ export default function Onboarding({ onStart }) {
             </p>
             <div className="mt-4 flex justify-center">
               <TakesRotator />
+            </div>
+            <div className="mt-4 flex justify-center">
+              <button
+                type="button"
+                onClick={onShowRules}
+                className="flex items-center gap-1.5 text-xs font-medium text-gray-400 transition-colors hover:text-[#C6402F] dark:text-gray-500 dark:hover:text-[#FF5A42]"
+              >
+                <BookOpen size={13} />
+                Как читать реакции — гайд по правилам
+              </button>
             </div>
           </div>
         )}

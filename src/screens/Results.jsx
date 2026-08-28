@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { Copy, Download, Printer } from 'lucide-react'
+import { BookOpen, Copy, Download, Printer } from 'lucide-react'
 import MistakeAccordion from '../components/MistakeAccordion'
 import ThemeToggle from '../components/ThemeToggle'
 import PrintableReport from '../components/PrintableReport'
 import { buildMarkdownReport, downloadTextFile } from '../utils/report'
 
-export default function Results({ result, persona, onRestart }) {
+export default function Results({ result, persona, onRestart, onShowRules }) {
   const { score, grade, mistakes, insightsRevealed, insightsTotal, blindMode } = result
   const [copied, setCopied] = useState(false)
 
@@ -46,7 +46,17 @@ export default function Results({ result, persona, onRestart }) {
         </header>
 
         <section className="flex-1 overflow-y-auto">
-          <h2 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-300">Разбор ошибок</h2>
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Разбор ошибок</h2>
+            <button
+              type="button"
+              onClick={onShowRules}
+              className="flex items-center gap-1 text-xs font-medium text-gray-400 transition-colors hover:text-[#C6402F] dark:text-gray-500 dark:hover:text-[#FF5A42]"
+            >
+              <BookOpen size={12} />
+              Освежить правила
+            </button>
+          </div>
           <MistakeAccordion mistakes={mistakes} />
 
           <h2 className="mb-3 mt-6 text-sm font-semibold text-gray-700 dark:text-gray-300">
