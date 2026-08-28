@@ -6,7 +6,8 @@ import Results from './screens/Results'
 import RulesGuide from './screens/RulesGuide'
 import SessionHistory from './screens/SessionHistory'
 import TransitionScreen from './components/TransitionScreen'
-import { addHistoryEntry } from './utils/storage'
+import { addHistoryEntry, getHistory } from './utils/storage'
+import { computeAchievements } from './utils/achievements'
 
 const TRANSITION_MS = 550
 
@@ -34,6 +35,8 @@ function App() {
 
   const handleFinish = (sessionResult) => {
     runTransition('Подводим итоги…', () => {
+      const beforeAchievements = computeAchievements(getHistory())
+
       addHistoryEntry({
         id: `session-${Date.now()}`,
         date: new Date().toISOString(),
@@ -49,7 +52,13 @@ function App() {
         mistakesCount: sessionResult.mistakes.length,
         blindMode: sessionResult.blindMode,
       })
-      setResult(sessionResult)
+
+      const afterAchievements = computeAchievements(getHistory())
+      const newAchievements = afterAchievements.filter(
+        (a, i) => a.unlocked && !beforeAchievements[i].unlocked,
+      )
+
+      setResult({ ...sessionResult, newAchievements })
     })
   }
 

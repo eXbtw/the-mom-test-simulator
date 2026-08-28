@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Home } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Clock, Home } from 'lucide-react'
 import ChatPanel from '../components/ChatPanel'
 import ScoreWidget from '../components/ScoreWidget'
 import ScoreDeltaPopup from '../components/ScoreDeltaPopup'
@@ -12,9 +12,16 @@ import { fetchEvaluation, fetchPersonaReply } from '../services/aiClient'
 import { gradeForScore } from '../utils/grading'
 
 const MISTAKE_TYPES = new Set(['hypothetical', 'leading_question', 'pitching'])
+const TIMER_SECONDS = 4 * 60
 
 let messageId = 0
 const nextId = () => ++messageId
+
+function formatTime(seconds) {
+  const m = Math.floor(seconds / 60)
+  const s = seconds % 60
+  return `${m}:${s.toString().padStart(2, '0')}`
+}
 
 export default function Workspace({ persona, blindMode, onFinish, onExit }) {
   const [started, setStarted] = useState(false)
@@ -27,6 +34,15 @@ export default function Workspace({ persona, blindMode, onFinish, onExit }) {
   const [alert, setAlert] = useState(null)
   const [isThinking, setIsThinking] = useState(false)
   const [mistakes, setMistakes] = useState([])
+  const [secondsLeft, setSecondsLeft] = useState(TIMER_SECONDS)
+
+  useEffect(() => {
+    if (!started) return
+    const id = setInterval(() => {
+      setSecondsLeft((s) => (s > 0 ? s - 1 : 0))
+    }, 1000)
+    return () => clearInterval(id)
+  }, [started])
 
   const handleStart = () => {
     setMessages([{ id: nextId(), role: 'ai', text: persona.openingLine }])
@@ -136,6 +152,20 @@ export default function Workspace({ persona, blindMode, onFinish, onExit }) {
         </div>
         <div className="flex shrink-0 items-center gap-2">
           <ThemeToggle />
+          {started && (
+            <span
+              className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${
+                secondsLeft === 0
+                  ? 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300'
+                  : secondsLeft <= 60
+                    ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300'
+                    : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300'
+              }`}
+            >
+              <Clock size={12} />
+              {secondsLeft === 0 ? 'Время вышло' : formatTime(secondsLeft)}
+            </span>
+          )}
           <button
             type="button"
             onClick={handleFinish}

@@ -7,7 +7,7 @@ import { buildMarkdownReport, downloadTextFile } from '../utils/report'
 import { getHistory } from '../utils/storage'
 
 export default function Results({ result, persona, onRestart, onShowRules, onShowHistory }) {
-  const { score, grade, mistakes, insightsRevealed, insightsTotal, blindMode } = result
+  const { score, grade, mistakes, insightsRevealed, insightsTotal, blindMode, newAchievements } = result
   const [copied, setCopied] = useState(false)
 
   const sameRespondent = getHistory().filter((h) => h.personaId === persona.id)
@@ -71,6 +71,22 @@ export default function Results({ result, persona, onRestart, onShowRules, onSho
             </p>
           )}
         </header>
+
+        {newAchievements?.length > 0 && (
+          <div className="animate-take-fade-in mb-6 shrink-0 rounded-xl border border-[#C6402F]/25 bg-[#FDF2EF] p-3 text-center dark:border-[#FF5A42]/25 dark:bg-gray-800">
+            <p className="text-sm font-semibold text-[#C6402F] dark:text-[#FF5A42]">
+              🎉 Новое достижение{newAchievements.length > 1 ? 'я' : ''}!
+            </p>
+            <div className="mt-2 flex flex-wrap justify-center gap-4">
+              {newAchievements.map((a) => (
+                <div key={a.id} className="flex flex-col items-center gap-1">
+                  <span className="text-2xl leading-none">{a.icon}</span>
+                  <span className="text-xs text-gray-600 dark:text-gray-400">{a.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <section className="flex-1 overflow-y-auto">
           <div className="mb-3 flex items-center justify-between gap-3">
