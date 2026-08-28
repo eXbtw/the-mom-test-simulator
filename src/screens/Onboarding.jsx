@@ -18,6 +18,7 @@ export default function Onboarding({ onStart }) {
   const [branchId, setBranchId] = useState(null)
   const [persona, setPersona] = useState(null)
   const [confirmOrigin, setConfirmOrigin] = useState('category')
+  const [blindMode, setBlindMode] = useState(false)
 
   const categories = branchId
     ? PERSONAS.filter((p) => p.branch === branchId)
@@ -116,10 +117,29 @@ export default function Onboarding({ onStart }) {
       {step === 'confirm' && persona && (
         <>
           <PersonaCard persona={persona} />
+
+          <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
+            <input
+              type="checkbox"
+              checked={blindMode}
+              onChange={(e) => setBlindMode(e.target.checked)}
+              className="mt-0.5 h-4 w-4 shrink-0 accent-blue-600"
+            />
+            <span>
+              <span className="block text-sm font-medium text-gray-900 dark:text-gray-100">
+                🙈 Режим вслепую
+              </span>
+              <span className="block text-xs text-gray-500 dark:text-gray-400">
+                Панель аудитора и подсказки будут скрыты во время разговора — счёт и разбор
+                ошибок откроются только в конце.
+              </span>
+            </span>
+          </label>
+
           <button
             type="button"
-            onClick={() => onStart(persona)}
-            className="mt-6 w-full rounded-lg bg-blue-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+            onClick={() => onStart(persona, blindMode)}
+            className="mt-4 w-full rounded-lg bg-blue-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
           >
             Начать интервью
           </button>

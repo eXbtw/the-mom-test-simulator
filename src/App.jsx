@@ -6,7 +6,13 @@ import Results from './screens/Results'
 
 function App() {
   const [persona, setPersona] = useState(null)
+  const [blindMode, setBlindMode] = useState(false)
   const [result, setResult] = useState(null)
+
+  const handleStart = (selectedPersona, isBlindMode) => {
+    setPersona(selectedPersona)
+    setBlindMode(isBlindMode)
+  }
 
   const handleRestart = () => {
     setPersona(null)
@@ -15,11 +21,11 @@ function App() {
 
   let screen
   if (!persona) {
-    screen = <Onboarding onStart={setPersona} />
+    screen = <Onboarding onStart={handleStart} />
   } else if (result) {
-    screen = <Results result={result} onRestart={handleRestart} />
+    screen = <Results result={result} persona={persona} onRestart={handleRestart} />
   } else {
-    screen = <Workspace persona={persona} onFinish={setResult} />
+    screen = <Workspace persona={persona} blindMode={blindMode} onFinish={setResult} />
   }
 
   return <AppShell>{screen}</AppShell>

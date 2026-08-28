@@ -15,7 +15,7 @@ const MISTAKE_TYPES = new Set(['hypothetical', 'leading_question', 'pitching'])
 let messageId = 0
 const nextId = () => ++messageId
 
-export default function Workspace({ persona, onFinish }) {
+export default function Workspace({ persona, blindMode, onFinish }) {
   const [started, setStarted] = useState(false)
   const [messages, setMessages] = useState([])
   const [score, setScore] = useState(50)
@@ -45,10 +45,13 @@ export default function Workspace({ persona, onFinish }) {
 
       if (result) {
         setScore((prev) => Math.max(0, Math.min(100, prev + result.delta)))
-        setScoreDelta({ id: nextId(), value: result.delta })
-        setTimeout(() => setScoreDelta(null), 1300)
-        setAlert({ type: result.type, message: result.message })
-        setTimeout(() => setAlert(null), 4000)
+
+        if (!blindMode) {
+          setScoreDelta({ id: nextId(), value: result.delta })
+          setTimeout(() => setScoreDelta(null), 1300)
+          setAlert({ type: result.type, message: result.message })
+          setTimeout(() => setAlert(null), 4000)
+        }
 
         if (result.type === 'good_question') {
           setInsights((prev) => {
@@ -88,8 +91,11 @@ export default function Workspace({ persona, onFinish }) {
       score,
       grade: gradeForScore(score),
       mistakes,
+      insights,
       insightsRevealed: insights.filter((i) => i.revealed).length,
       insightsTotal: insights.length,
+      messages,
+      blindMode,
     })
   }
 
@@ -104,6 +110,11 @@ export default function Workspace({ persona, onFinish }) {
             </h1>
             <p className="truncate text-xs text-gray-500 dark:text-gray-400 md:text-sm">
               {persona.role} · {persona.difficulty} · {persona.trafficSource.label}
+              {blindMode && (
+                <span className="ml-2 rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-semibold text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
+                  🙈 Вслепую
+                </span>
+              )}
             </p>
           </div>
         </div>
@@ -123,33 +134,37 @@ export default function Workspace({ persona, onFinish }) {
       <main className="flex flex-1 flex-col overflow-hidden md:flex-row">
         <PersonaContextPanel persona={persona} />
 
-        <aside className="flex shrink-0 items-center gap-4 overflow-x-auto border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-900 md:order-3 md:w-72 md:flex-col md:items-stretch md:gap-6 md:overflow-y-auto md:overflow-x-visible md:border-b-0 md:border-l md:bg-transparent md:p-6">
-          <div className="relative flex shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-white px-3 py-2 dark:border-gray-800 dark:bg-gray-900 md:w-full md:flex-col md:px-0 md:py-6">
-            <ScoreDeltaPopup delta={scoreDelta} />
-            <ScoreWidget score={score} />
-          </div>
+        {!blindMode && (
+          <aside className="flex shrink-0 items-center gap-4 overflow-x-auto border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-900 md:order-3 md:w-72 md:flex-col md:items-stretch md:gap-6 md:overflow-y-auto md:overflow-x-visible md:border-b-0 md:border-l md:bg-transparent md:p-6">
+            <div className="relative flex shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-white px-3 py-2 dark:border-gray-800 dark:bg-gray-900 md:w-full md:flex-col md:px-0 md:py-6">
+              <ScoreDeltaPopup delta={scoreDelta} />
+              <ScoreWidget score={score} />
+            </div>
 
-          <div className="min-w-0 flex-1 md:flex-none">
-            <h2 className="mb-2 hidden text-sm font-semibold text-gray-700 dark:text-gray-300 md:block">
-              Выявленные инсайты
-            </h2>
-            <InsightChips insights={insights} />
-          </div>
+            <div className="min-w-0 flex-1 md:flex-none">
+              <h2 className="mb-2 hidden text-sm font-semibold text-gray-700 dark:text-gray-300 md:block">
+                Выявленные инсайты
+              </h2>
+              <InsightChips insights={insights} />
+            </div>
 
-          <div className="hidden md:block">
-            <h2 className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Подсказка аудитора
-            </h2>
-            <AlertBox alert={alert} />
-          </div>
-        </aside>
-
-        <section className="relative min-h-0 flex-1 bg-white dark:bg-gray-900 md:order-2">
-          <div className="pointer-events-none absolute inset-x-0 top-2 z-10 flex justify-center px-4 md:hidden">
-            <div className="pointer-events-auto w-full max-w-sm">
+            <div className="hidden md:block">
+              <h2 className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Подсказка аудитора
+              </h2>
               <AlertBox alert={alert} />
             </div>
-          </div>
+          </aside>
+        )}
+
+        <section className="relative min-h-0 flex-1 bg-white dark:bg-gray-900 md:order-2">
+          {!blindMode && (
+            <div className="pointer-events-none absolute inset-x-0 top-2 z-10 flex justify-center px-4 md:hidden">
+              <div className="pointer-events-auto w-full max-w-sm">
+                <AlertBox alert={alert} />
+              </div>
+            </div>
+          )}
 
           {started ? (
             <ChatPanel messages={messages} onSend={handleSend} isThinking={isThinking} />
