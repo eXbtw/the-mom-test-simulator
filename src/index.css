@@ -2,6 +2,11 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --font-display: 'Space Mono', ui-monospace, monospace;
+  --font-hand: 'Caveat', cursive;
+}
+
 html {
   background-color: #f3f4f6;
   color-scheme: light;
@@ -29,4 +34,19 @@ html.dark {
 
 .animate-score-float {
   animation: score-float 1.3s ease-out forwards;
+}
+
+@keyframes take-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-take-fade-in {
+  animation: take-fade-in 0.5s ease-out;
 }

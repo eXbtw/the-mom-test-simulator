@@ -37,7 +37,7 @@ export default function Results({ result, persona, onRestart }) {
               </span>
             )}
           </p>
-          <h1 className="mt-1 text-3xl font-semibold text-gray-900 dark:text-gray-100">
+          <h1 className="mt-1 font-display text-3xl font-semibold text-gray-900 dark:text-gray-100">
             {score}/100 · {grade}
           </h1>
           <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">

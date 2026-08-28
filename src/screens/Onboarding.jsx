@@ -5,6 +5,9 @@ import SelectionCard from '../components/SelectionCard'
 import PersonaCard from '../components/PersonaCard'
 import CustomPersonaForm from '../components/CustomPersonaForm'
 import ThemeToggle from '../components/ThemeToggle'
+import Logo from '../components/Logo'
+import TranscriptHero from '../components/TranscriptHero'
+import TakesRotator from '../components/TakesRotator'
 
 const STEP_TITLES = {
   branch: 'С кем тренируемся?',
@@ -52,18 +55,26 @@ export default function Onboarding({ onStart }) {
   }
 
   return (
-    <div className="mx-auto flex h-full w-full max-w-2xl flex-col justify-center overflow-y-auto px-6 py-10">
-      <div className="mb-2 flex justify-end">
+    <div className="mx-auto flex h-full w-full max-w-2xl flex-col overflow-y-auto px-6 py-10">
+      <div className="mb-6 flex items-center justify-between">
+        <Logo />
         <ThemeToggle />
       </div>
 
-      <header className="mb-8 text-center">
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">The Mom Test Simulator</h1>
-        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-          Потренируйте проблемные интервью на AI-персоне и получите разбор ошибок
-          по методологии «Спроси маму».
-        </p>
-      </header>
+      {step === 'branch' && (
+        <div className="mb-8">
+          <TranscriptHero />
+          <p className="mx-auto mt-4 max-w-sm text-center text-sm italic text-gray-500 dark:text-gray-400">
+            «Вам соврут, если вы зададите плохой вопрос»
+            <span className="mt-1 block not-italic text-xs text-gray-400 dark:text-gray-500">
+              — Роб Фицпатрик, «Спроси маму»
+            </span>
+          </p>
+          <div className="mt-4 flex justify-center">
+            <TakesRotator />
+          </div>
+        </div>
+      )}
 
       <div className="mb-4 flex items-center gap-2">
         {step !== 'branch' && (
@@ -123,7 +134,7 @@ export default function Onboarding({ onStart }) {
               type="checkbox"
               checked={blindMode}
               onChange={(e) => setBlindMode(e.target.checked)}
-              className="mt-0.5 h-4 w-4 shrink-0 accent-blue-600"
+              className="mt-0.5 h-4 w-4 shrink-0 accent-[#C6402F]"
             />
             <span>
               <span className="block text-sm font-medium text-gray-900 dark:text-gray-100">
@@ -139,7 +150,7 @@ export default function Onboarding({ onStart }) {
           <button
             type="button"
             onClick={() => onStart(persona, blindMode)}
-            className="mt-4 w-full rounded-lg bg-blue-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+            className="mt-4 w-full rounded-lg bg-[#C6402F] py-3 text-sm font-semibold text-white transition-colors hover:bg-[#A32F21]"
           >
             Начать интервью
           </button>

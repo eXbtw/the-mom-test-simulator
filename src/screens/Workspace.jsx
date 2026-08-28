@@ -105,7 +105,7 @@ export default function Workspace({ persona, blindMode, onFinish }) {
         <div className="flex min-w-0 items-center gap-3">
           <PersonaAvatar categoryId={persona.category?.id} size="sm" />
           <div className="min-w-0">
-            <h1 className="text-base font-semibold text-gray-900 dark:text-gray-100 md:text-lg">
+            <h1 className="font-display text-base font-semibold text-gray-900 dark:text-gray-100 md:text-lg">
               The Mom Test Simulator
             </h1>
             <p className="truncate text-xs text-gray-500 dark:text-gray-400 md:text-sm">
