@@ -25,7 +25,14 @@ function App() {
   } else if (result) {
     screen = <Results result={result} persona={persona} onRestart={handleRestart} />
   } else {
-    screen = <Workspace persona={persona} blindMode={blindMode} onFinish={setResult} />
+    screen = (
+      <Workspace
+        persona={persona}
+        blindMode={blindMode}
+        onFinish={setResult}
+        onExit={handleRestart}
+      />
+    )
   }
 
   return <AppShell>{screen}</AppShell>

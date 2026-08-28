@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Home } from 'lucide-react'
 import ChatPanel from '../components/ChatPanel'
 import ScoreWidget from '../components/ScoreWidget'
 import ScoreDeltaPopup from '../components/ScoreDeltaPopup'
@@ -15,7 +16,7 @@ const MISTAKE_TYPES = new Set(['hypothetical', 'leading_question', 'pitching'])
 let messageId = 0
 const nextId = () => ++messageId
 
-export default function Workspace({ persona, blindMode, onFinish }) {
+export default function Workspace({ persona, blindMode, onFinish, onExit }) {
   const [started, setStarted] = useState(false)
   const [messages, setMessages] = useState([])
   const [score, setScore] = useState(50)
@@ -86,6 +87,13 @@ export default function Workspace({ persona, blindMode, onFinish }) {
     }
   }
 
+  const handleExit = () => {
+    if (started && !window.confirm('Выйти на главный экран? Прогресс интервью не сохранится.')) {
+      return
+    }
+    onExit()
+  }
+
   const handleFinish = () => {
     onFinish({
       score,
@@ -103,6 +111,14 @@ export default function Workspace({ persona, blindMode, onFinish }) {
     <div className="flex h-full w-full flex-col bg-gray-50 dark:bg-gray-900">
       <header className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-gray-200 bg-white px-4 py-2.5 dark:border-gray-800 dark:bg-gray-900 md:px-6 md:py-3">
         <div className="flex min-w-0 items-center gap-3">
+          <button
+            type="button"
+            onClick={handleExit}
+            aria-label="На главный экран"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+          >
+            <Home size={16} />
+          </button>
           <PersonaAvatar categoryId={persona.category?.id} size="sm" />
           <div className="min-w-0">
             <h1 className="font-display text-base font-semibold text-gray-900 dark:text-gray-100 md:text-lg">
