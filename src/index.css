@@ -17,6 +17,10 @@ html.dark {
   color-scheme: dark;
 }
 
+.justify-safe-center {
+  justify-content: safe center;
+}
+
 @keyframes score-float {
   0% {
     opacity: 0;
