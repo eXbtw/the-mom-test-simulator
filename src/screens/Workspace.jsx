@@ -181,7 +181,7 @@ export default function Workspace({ persona, blindMode, onFinish, onExit }) {
         <PersonaContextPanel persona={persona} />
 
         {!blindMode && (
-          <aside className="flex shrink-0 items-center gap-4 overflow-x-auto border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-900 md:order-3 md:w-72 md:flex-col md:items-stretch md:gap-6 md:overflow-y-auto md:overflow-x-visible md:border-b-0 md:border-l md:bg-transparent md:p-6">
+          <aside className="flex shrink-0 items-center gap-4 border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-900 md:order-3 md:w-72 md:flex-col md:items-stretch md:gap-6 md:overflow-y-auto md:overflow-x-visible md:border-b-0 md:border-l md:bg-transparent md:p-6">
             <div className="relative flex shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-white px-3 py-2 dark:border-gray-800 dark:bg-gray-900 md:w-full md:flex-col md:px-0 md:py-6">
               <ScoreDeltaPopup delta={scoreDelta} />
               <ScoreWidget score={score} />
