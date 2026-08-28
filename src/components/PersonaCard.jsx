@@ -1,3 +1,4 @@
+import { Star } from 'lucide-react'
 import PersonaAvatar from './PersonaAvatar'
 
 const DIFFICULTY_STYLES = {
@@ -6,7 +7,7 @@ const DIFFICULTY_STYLES = {
   Hard: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
 }
 
-export default function PersonaCard({ persona }) {
+export default function PersonaCard({ persona, isSaved, onToggleSave }) {
   return (
     <div className="w-full rounded-xl border border-gray-200 bg-white p-5 text-left dark:border-gray-700 dark:bg-gray-800">
       <div className="flex items-start justify-between gap-3">
@@ -17,13 +18,29 @@ export default function PersonaCard({ persona }) {
             <p className="text-sm text-gray-600 dark:text-gray-400">{persona.role}</p>
           </div>
         </div>
-        <span
-          className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${
-            DIFFICULTY_STYLES[persona.difficulty] ?? 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300'
-          }`}
-        >
-          {persona.difficulty}
-        </span>
+        <div className="flex shrink-0 items-center gap-2">
+          {onToggleSave && (
+            <button
+              type="button"
+              onClick={onToggleSave}
+              aria-label={isSaved ? 'Убрать из сохранённых' : 'Сохранить персону'}
+              className={`flex h-7 w-7 items-center justify-center rounded-full transition-colors ${
+                isSaved
+                  ? 'text-[#C6402F] dark:text-[#FF5A42]'
+                  : 'text-gray-300 hover:text-gray-400 dark:text-gray-600 dark:hover:text-gray-500'
+              }`}
+            >
+              <Star size={16} fill={isSaved ? 'currentColor' : 'none'} />
+            </button>
+          )}
+          <span
+            className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+              DIFFICULTY_STYLES[persona.difficulty] ?? 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300'
+            }`}
+          >
+            {persona.difficulty}
+          </span>
+        </div>
       </div>
       <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">{persona.description}</p>
       <div className="mt-4 flex items-center gap-2 border-t border-gray-100 pt-3 text-xs text-gray-500 dark:border-gray-700 dark:text-gray-400">

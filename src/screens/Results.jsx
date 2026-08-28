@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { BookOpen, Copy, Download, Printer } from 'lucide-react'
+import { BookOpen, Copy, Download, History, Printer } from 'lucide-react'
 import MistakeAccordion from '../components/MistakeAccordion'
 import ThemeToggle from '../components/ThemeToggle'
 import PrintableReport from '../components/PrintableReport'
 import { buildMarkdownReport, downloadTextFile } from '../utils/report'
 
-export default function Results({ result, persona, onRestart, onShowRules }) {
+export default function Results({ result, persona, onRestart, onShowRules, onShowHistory }) {
   const { score, grade, mistakes, insightsRevealed, insightsTotal, blindMode } = result
   const [copied, setCopied] = useState(false)
 
@@ -46,16 +46,26 @@ export default function Results({ result, persona, onRestart, onShowRules }) {
         </header>
 
         <section className="flex-1 overflow-y-auto">
-          <div className="mb-3 flex items-center justify-between">
+          <div className="mb-3 flex items-center justify-between gap-3">
             <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Разбор ошибок</h2>
-            <button
-              type="button"
-              onClick={onShowRules}
-              className="flex items-center gap-1 text-xs font-medium text-gray-400 transition-colors hover:text-[#C6402F] dark:text-gray-500 dark:hover:text-[#FF5A42]"
-            >
-              <BookOpen size={12} />
-              Освежить правила
-            </button>
+            <div className="flex shrink-0 items-center gap-3">
+              <button
+                type="button"
+                onClick={onShowRules}
+                className="flex items-center gap-1 text-xs font-medium text-gray-400 transition-colors hover:text-[#C6402F] dark:text-gray-500 dark:hover:text-[#FF5A42]"
+              >
+                <BookOpen size={12} />
+                Правила
+              </button>
+              <button
+                type="button"
+                onClick={onShowHistory}
+                className="flex items-center gap-1 text-xs font-medium text-gray-400 transition-colors hover:text-[#C6402F] dark:text-gray-500 dark:hover:text-[#FF5A42]"
+              >
+                <History size={12} />
+                История
+              </button>
+            </div>
           </div>
           <MistakeAccordion mistakes={mistakes} />
 

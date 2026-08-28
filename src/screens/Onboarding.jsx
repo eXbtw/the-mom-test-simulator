@@ -1,14 +1,16 @@
 import { useState } from 'react'
-import { ArrowLeft, BookOpen, Briefcase, UserRound, Zap } from 'lucide-react'
+import { ArrowLeft, BookOpen, Briefcase, History, UserRound, Zap } from 'lucide-react'
 import { BRANCHES, PERSONAS } from '../data/personas'
 import SelectionCard from '../components/SelectionCard'
 import PersonaCard from '../components/PersonaCard'
+import SavedPersonaRow from '../components/SavedPersonaRow'
 import CustomPersonaForm from '../components/CustomPersonaForm'
 import ThemeToggle from '../components/ThemeToggle'
 import Logo from '../components/Logo'
 import TranscriptHero from '../components/TranscriptHero'
 import TakesRotator from '../components/TakesRotator'
 import QuickChallenge from './QuickChallenge'
+import { getSavedPersonas, isPersonaSaved, removeSavedPersona, savePersona } from '../utils/storage'
 
 const STEP_TITLES = {
   branch: 'С кем тренируемся?',
@@ -22,15 +24,20 @@ const BRANCH_ICONS = {
   b2c: UserRound,
 }
 
-export default function Onboarding({ onStart, onShowRules }) {
+export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
   const [step, setStep] = useState('branch')
   const [branchId, setBranchId] = useState(null)
   const [persona, setPersona] = useState(null)
   const [confirmOrigin, setConfirmOrigin] = useState('category')
   const [blindMode, setBlindMode] = useState(false)
+  const [savedPersonas, setSavedPersonas] = useState(() => getSavedPersonas())
+  const [isSaved, setIsSaved] = useState(false)
 
   const categories = branchId
     ? PERSONAS.filter((p) => p.branch === branchId)
+    : []
+  const savedForBranch = branchId
+    ? savedPersonas.filter((p) => p.branch === branchId)
     : []
 
   const handleBranchSelect = (id) => {
@@ -41,13 +48,30 @@ export default function Onboarding({ onStart, onShowRules }) {
   const handleCategorySelect = (selectedPersona) => {
     setPersona(selectedPersona)
     setConfirmOrigin('category')
+    setIsSaved(isPersonaSaved(selectedPersona.id))
     setStep('confirm')
   }
 
   const handleGenerated = (generatedPersona) => {
     setPersona(generatedPersona)
     setConfirmOrigin('custom')
+    setIsSaved(false)
     setStep('confirm')
+  }
+
+  const handleToggleSave = () => {
+    if (isSaved) {
+      removeSavedPersona(persona.id)
+    } else {
+      savePersona(persona)
+    }
+    setIsSaved((v) => !v)
+    setSavedPersonas(getSavedPersonas())
+  }
+
+  const handleDeleteSaved = (id) => {
+    removeSavedPersona(id)
+    setSavedPersonas(getSavedPersonas())
   }
 
   const goBack = () => {
@@ -84,14 +108,23 @@ export default function Onboarding({ onStart, onShowRules }) {
             <div className="mt-3 flex justify-center">
               <TakesRotator />
             </div>
-            <div className="mt-3 flex justify-center">
+            <div className="mt-3 flex items-center justify-center gap-3">
               <button
                 type="button"
                 onClick={onShowRules}
                 className="flex items-center gap-1.5 text-xs font-medium text-gray-400 transition-colors hover:text-[#C6402F] dark:text-gray-500 dark:hover:text-[#FF5A42]"
               >
                 <BookOpen size={13} />
-                Как читать реакции — гайд по правилам
+                Правила
+              </button>
+              <span className="text-gray-300 dark:text-gray-700">·</span>
+              <button
+                type="button"
+                onClick={onShowHistory}
+                className="flex items-center gap-1.5 text-xs font-medium text-gray-400 transition-colors hover:text-[#C6402F] dark:text-gray-500 dark:hover:text-[#FF5A42]"
+              >
+                <History size={13} />
+                История
               </button>
             </div>
           </div>
@@ -166,6 +199,22 @@ export default function Onboarding({ onStart, onShowRules }) {
               subtitle="Опишите нишу своими словами — респондента сгенерирует AI"
               onSelect={() => setStep('custom')}
             />
+
+            {savedForBranch.length > 0 && (
+              <>
+                <p className="pt-2 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">
+                  Сохранённые
+                </p>
+                {savedForBranch.map((p) => (
+                  <SavedPersonaRow
+                    key={p.id}
+                    persona={p}
+                    onSelect={() => handleCategorySelect(p)}
+                    onDelete={() => handleDeleteSaved(p.id)}
+                  />
+                ))}
+              </>
+            )}
           </div>
         )}
 
@@ -175,7 +224,11 @@ export default function Onboarding({ onStart, onShowRules }) {
 
         {step === 'confirm' && persona && (
           <>
-            <PersonaCard persona={persona} />
+            <PersonaCard
+              persona={persona}
+              isSaved={isSaved}
+              onToggleSave={persona.id.startsWith('custom-') ? handleToggleSave : undefined}
+            />
 
             <label className="mt-3 flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
               <input
