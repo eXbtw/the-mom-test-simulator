@@ -1,4 +1,5 @@
 import { callGemini } from './_gemini.js'
+import { checkRateLimit, getClientIp } from './_rateLimit.js'
 
 const SYSTEM_INSTRUCTION = `Ты — Агент-Аудитор, оцениваешь качество вопросов интервьюера по методологии The Mom Test (Роб Фицпатрик).
 
@@ -30,6 +31,11 @@ const RESPONSE_SCHEMA = {
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' })
+    return
+  }
+
+  if (!checkRateLimit(getClientIp(req))) {
+    res.status(429).json({ error: 'Слишком много запросов, попробуйте через минуту' })
     return
   }
 
