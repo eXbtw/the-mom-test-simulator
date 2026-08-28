@@ -17,7 +17,7 @@ export default function TakesRotator() {
   }, [])
 
   return (
-    <p key={index} className="animate-take-fade-in font-hand text-xl text-[#C6402F] dark:text-[#FF6E56]">
+    <p key={index} className="animate-take-fade-in font-hand text-xl text-[#C6402F] dark:text-[#FF5A42]">
       {TAKES[index]}
     </p>
   )

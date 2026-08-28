@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Briefcase, UserRound, Zap } from 'lucide-react'
 import { BRANCHES, PERSONAS } from '../data/personas'
 import SelectionCard from '../components/SelectionCard'
 import PersonaCard from '../components/PersonaCard'
@@ -8,12 +8,18 @@ import ThemeToggle from '../components/ThemeToggle'
 import Logo from '../components/Logo'
 import TranscriptHero from '../components/TranscriptHero'
 import TakesRotator from '../components/TakesRotator'
+import QuickChallenge from './QuickChallenge'
 
 const STEP_TITLES = {
   branch: 'С кем тренируемся?',
   category: 'Выберите направление',
   custom: 'Своя сфера',
   confirm: 'Ваш респондент',
+}
+
+const BRANCH_ICONS = {
+  b2b: Briefcase,
+  b2c: UserRound,
 }
 
 export default function Onboarding({ onStart }) {
@@ -54,8 +60,12 @@ export default function Onboarding({ onStart }) {
     }
   }
 
+  if (step === 'challenge') {
+    return <QuickChallenge onExit={() => setStep('branch')} />
+  }
+
   return (
-    <div className="h-full w-full overflow-y-auto dark:bg-[#171310]">
+    <div className="h-full w-full overflow-y-auto">
       <div className="mx-auto flex h-full w-full max-w-2xl flex-col px-6 py-10">
         <div className="mb-6 flex items-center justify-between">
           <Logo />
@@ -63,7 +73,7 @@ export default function Onboarding({ onStart }) {
         </div>
 
         {step === 'branch' && (
-          <div className="mb-8">
+          <div className="animate-hero-in mb-8">
             <TranscriptHero />
             <p className="mx-auto mt-4 max-w-sm text-center text-sm italic text-gray-500 dark:text-gray-400">
               «Вам соврут, если вы зададите плохой вопрос»
@@ -93,14 +103,38 @@ export default function Onboarding({ onStart }) {
 
         {step === 'branch' && (
           <div className="space-y-3">
-            {BRANCHES.map((branch) => (
-              <SelectionCard
+            {BRANCHES.map((branch, i) => (
+              <div
                 key={branch.id}
-                title={branch.label}
-                subtitle={branch.description}
-                onSelect={() => handleBranchSelect(branch.id)}
-              />
+                className="animate-hero-in"
+                style={{ animationDelay: `${100 + i * 80}ms` }}
+              >
+                <SelectionCard
+                  title={branch.label}
+                  subtitle={branch.description}
+                  icon={BRANCH_ICONS[branch.id]}
+                  onSelect={() => handleBranchSelect(branch.id)}
+                />
+              </div>
             ))}
+
+            <div className="animate-hero-in" style={{ animationDelay: `${100 + BRANCHES.length * 80}ms` }}>
+              <button
+                type="button"
+                onClick={() => setStep('challenge')}
+                className="group flex w-full items-center gap-3 rounded-xl border border-[#C6402F]/25 bg-[#FDF2EF] p-4 text-left transition-colors hover:border-[#C6402F] hover:bg-[#FBE3DD] dark:border-[#FF5A42]/25 dark:bg-gray-800 dark:hover:border-[#FF5A42] dark:hover:bg-gray-700"
+              >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#C6402F]/10 text-[#C6402F] dark:bg-[#FF5A42]/15 dark:text-[#FF5A42]">
+                  <Zap size={18} />
+                </span>
+                <span className="min-w-0">
+                  <h3 className="font-semibold text-gray-900 dark:text-gray-100">⚡ Задача дня</h3>
+                  <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    Один фрагмент диалога, один ваш ответ — быстрая проверка навыка
+                  </p>
+                </span>
+              </button>
+            </div>
           </div>
         )}
 
@@ -130,7 +164,7 @@ export default function Onboarding({ onStart }) {
           <>
             <PersonaCard persona={persona} />
 
-            <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 bg-white p-4 dark:border-[#3A3226] dark:bg-[#211C15]">
+            <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
               <input
                 type="checkbox"
                 checked={blindMode}

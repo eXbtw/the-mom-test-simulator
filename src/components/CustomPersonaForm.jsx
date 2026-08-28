@@ -33,7 +33,7 @@ export default function CustomPersonaForm({ branch, onGenerated }) {
           placeholder="Например: розничный магазин цветов, стоматологическая клиника, интернет-магазин косметики…"
           rows={3}
           disabled={isLoading}
-          className="mt-2 w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 outline-none focus:border-[#C6402F] disabled:bg-gray-50 dark:border-[#3A3226] dark:bg-[#211C15] dark:text-gray-100 dark:focus:border-[#FF6E56] dark:disabled:bg-[#171310]"
+          className="mt-2 w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 outline-none focus:border-[#C6402F] disabled:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-[#FF5A42] dark:disabled:bg-gray-900"
         />
       </label>
 

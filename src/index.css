@@ -50,3 +50,26 @@ html.dark {
 .animate-take-fade-in {
   animation: take-fade-in 0.5s ease-out;
 }
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-hero-in {
+  animation: hero-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-in,
+  .animate-take-fade-in,
+  .animate-score-float {
+    animation: none;
+  }
+}

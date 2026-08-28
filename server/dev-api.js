@@ -6,11 +6,15 @@ import http from 'node:http'
 import personaHandler from '../api/persona.js'
 import evaluatorHandler from '../api/evaluator.js'
 import personaBuilderHandler from '../api/persona-builder.js'
+import challengeHandler from '../api/challenge.js'
+import challengeFeedbackHandler from '../api/challenge-feedback.js'
 
 const ROUTES = {
   '/api/persona': personaHandler,
   '/api/evaluator': evaluatorHandler,
   '/api/persona-builder': personaBuilderHandler,
+  '/api/challenge': challengeHandler,
+  '/api/challenge-feedback': challengeFeedbackHandler,
 }
 
 function addResponseHelpers(res) {

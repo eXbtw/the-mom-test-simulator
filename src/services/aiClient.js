@@ -25,3 +25,15 @@ export async function generatePersona(branch, description) {
   const data = await postJson('/api/persona-builder', { branch, description })
   return data.persona
 }
+
+export async function fetchChallenge() {
+  return postJson('/api/challenge', {})
+}
+
+export async function fetchChallengeFeedback(fragment, response) {
+  return postJson('/api/challenge-feedback', {
+    speaker: fragment.speaker,
+    line: fragment.line,
+    response,
+  })
+}
