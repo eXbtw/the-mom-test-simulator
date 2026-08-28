@@ -13,8 +13,8 @@ export default function ScoreWidget({ score }) {
   const color = colorForScore(clamped)
 
   return (
-    <div className="flex flex-col items-center gap-2">
-      <svg width="120" height="120" viewBox="0 0 120 120" className="-rotate-90">
+    <div className="flex flex-col items-center gap-1 md:gap-2">
+      <svg viewBox="0 0 120 120" className="h-14 w-14 -rotate-90 md:h-[120px] md:w-[120px]">
         <circle
           cx="60"
           cy="60"
@@ -45,7 +45,7 @@ export default function ScoreWidget({ score }) {
           {clamped}
         </text>
       </svg>
-      <span className="text-sm text-gray-500">Score</span>
+      <span className="hidden text-sm text-gray-500 md:block">Score</span>
     </div>
   )
 }
