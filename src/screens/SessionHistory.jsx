@@ -3,6 +3,7 @@ import { ArrowLeft, Trash2 } from 'lucide-react'
 import Logo from '../components/Logo'
 import ThemeToggle from '../components/ThemeToggle'
 import { clearHistory, getHistory } from '../utils/storage'
+import { computeAchievements, computeStreak } from '../utils/achievements'
 
 function scoreColor(score) {
   if (score >= 70) return 'text-green-600 dark:text-green-400'
@@ -32,6 +33,8 @@ export default function SessionHistory({ onExit }) {
     ? Math.round(history.reduce((sum, h) => sum + h.score, 0) / history.length)
     : 0
   const bestScore = history.length ? Math.max(...history.map((h) => h.score)) : 0
+  const streak = computeStreak(history)
+  const achievements = computeAchievements(history)
 
   return (
     <div className="h-full w-full overflow-y-auto">
@@ -62,21 +65,44 @@ export default function SessionHistory({ onExit }) {
           </p>
         ) : (
           <>
-            <div className="mb-4 grid grid-cols-3 gap-2">
-              <div className="rounded-xl border border-gray-200 bg-white p-3 text-center dark:border-gray-700 dark:bg-gray-800">
-                <p className="font-display text-xl font-bold text-gray-900 dark:text-gray-100">
+            <div className="mb-3 grid grid-cols-4 gap-1.5">
+              <div className="rounded-xl border border-gray-200 bg-white p-2.5 text-center dark:border-gray-700 dark:bg-gray-800">
+                <p className="font-display text-lg font-bold text-gray-900 dark:text-gray-100">
                   {history.length}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">интервью</p>
+                <p className="text-[10px] text-gray-500 dark:text-gray-400">интервью</p>
               </div>
-              <div className="rounded-xl border border-gray-200 bg-white p-3 text-center dark:border-gray-700 dark:bg-gray-800">
-                <p className="font-display text-xl font-bold text-gray-900 dark:text-gray-100">{avgScore}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">средний счёт</p>
+              <div className="rounded-xl border border-gray-200 bg-white p-2.5 text-center dark:border-gray-700 dark:bg-gray-800">
+                <p className="font-display text-lg font-bold text-gray-900 dark:text-gray-100">{avgScore}</p>
+                <p className="text-[10px] text-gray-500 dark:text-gray-400">средний</p>
               </div>
-              <div className="rounded-xl border border-gray-200 bg-white p-3 text-center dark:border-gray-700 dark:bg-gray-800">
-                <p className="font-display text-xl font-bold text-gray-900 dark:text-gray-100">{bestScore}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">лучший счёт</p>
+              <div className="rounded-xl border border-gray-200 bg-white p-2.5 text-center dark:border-gray-700 dark:bg-gray-800">
+                <p className="font-display text-lg font-bold text-gray-900 dark:text-gray-100">{bestScore}</p>
+                <p className="text-[10px] text-gray-500 dark:text-gray-400">лучший</p>
               </div>
+              <div className="rounded-xl border border-gray-200 bg-white p-2.5 text-center dark:border-gray-700 dark:bg-gray-800">
+                <p className="font-display text-lg font-bold text-gray-900 dark:text-gray-100">{streak}</p>
+                <p className="text-[10px] text-gray-500 dark:text-gray-400">подряд ≥60</p>
+              </div>
+            </div>
+
+            <div className="mb-4 flex gap-2 overflow-x-auto pb-1">
+              {achievements.map((a) => (
+                <div
+                  key={a.id}
+                  title={a.label}
+                  className={`flex shrink-0 flex-col items-center gap-1 rounded-xl border px-3 py-2 text-center ${
+                    a.unlocked
+                      ? 'border-[#C6402F]/25 bg-[#FDF2EF] dark:border-[#FF5A42]/25 dark:bg-gray-800'
+                      : 'border-gray-200 bg-gray-50 opacity-40 dark:border-gray-700 dark:bg-gray-800'
+                  }`}
+                >
+                  <span className="text-lg leading-none">{a.icon}</span>
+                  <span className="max-w-[70px] text-[10px] leading-tight text-gray-600 dark:text-gray-400">
+                    {a.label}
+                  </span>
+                </div>
+              ))}
             </div>
 
             <div className="flex-1 space-y-2 overflow-y-auto pb-2">

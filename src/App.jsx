@@ -37,6 +37,7 @@ function App() {
       addHistoryEntry({
         id: `session-${Date.now()}`,
         date: new Date().toISOString(),
+        personaId: persona.id,
         personaName: persona.name,
         personaRole: persona.role,
         categoryLabel: persona.category?.label,

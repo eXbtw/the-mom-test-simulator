@@ -1,0 +1,57 @@
+export function computeStreak(history) {
+  let streak = 0
+  for (const entry of history) {
+    if (entry.score >= 60) streak++
+    else break
+  }
+  return streak
+}
+
+const DEFINITIONS = [
+  {
+    id: 'first_interview',
+    icon: '🎯',
+    label: 'Первое интервью',
+    check: (history) => history.length >= 1,
+  },
+  {
+    id: 'hot_streak',
+    icon: '🔥',
+    label: '3 подряд ≥60',
+    check: (history) => computeStreak(history) >= 3,
+  },
+  {
+    id: 'flawless',
+    icon: '💎',
+    label: 'Без ошибок',
+    check: (history) => history.some((h) => h.mistakesCount === 0),
+  },
+  {
+    id: 'personal_best',
+    icon: '🏆',
+    label: 'Личный рекорд',
+    check: (history) =>
+      history.length > 0 && history[0].score === Math.max(...history.map((h) => h.score)),
+  },
+  {
+    id: 'marathon',
+    icon: '📚',
+    label: '10 интервью',
+    check: (history) => history.length >= 10,
+  },
+  {
+    id: 'brave',
+    icon: '🙈',
+    label: 'Смельчак',
+    check: (history) => history.some((h) => h.blindMode),
+  },
+]
+
+export function computeAchievements(history) {
+  return DEFINITIONS.map((def) => ({
+    id: def.id,
+    icon: def.icon,
+    label: def.label,
+    unlocked: def.check(history),
+  }))
+}

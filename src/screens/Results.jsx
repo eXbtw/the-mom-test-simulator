@@ -1,13 +1,18 @@
 import { useState } from 'react'
-import { BookOpen, Copy, Download, History, Printer } from 'lucide-react'
+import { BookOpen, Copy, Download, History, Home, Printer } from 'lucide-react'
 import MistakeAccordion from '../components/MistakeAccordion'
 import ThemeToggle from '../components/ThemeToggle'
 import PrintableReport from '../components/PrintableReport'
 import { buildMarkdownReport, downloadTextFile } from '../utils/report'
+import { getHistory } from '../utils/storage'
 
 export default function Results({ result, persona, onRestart, onShowRules, onShowHistory }) {
   const { score, grade, mistakes, insightsRevealed, insightsTotal, blindMode } = result
   const [copied, setCopied] = useState(false)
+
+  const sameRespondent = getHistory().filter((h) => h.personaId === persona.id)
+  const previousAttempt = sameRespondent[1]
+  const delta = previousAttempt ? score - previousAttempt.score : null
 
   const handleCopy = async () => {
     const markdown = buildMarkdownReport({ persona, result })
@@ -24,7 +29,15 @@ export default function Results({ result, persona, onRestart, onShowRules, onSho
   return (
     <>
       <div className="mx-auto flex h-full w-full max-w-2xl flex-col px-6 py-8 print:hidden">
-        <div className="mb-2 flex shrink-0 justify-end">
+        <div className="mb-2 flex shrink-0 items-center justify-between">
+          <button
+            type="button"
+            onClick={onRestart}
+            aria-label="На главный экран"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+          >
+            <Home size={16} />
+          </button>
           <ThemeToggle />
         </div>
 
@@ -43,6 +56,20 @@ export default function Results({ result, persona, onRestart, onShowRules, onSho
           <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
             Раскрыто инсайтов: {insightsRevealed} из {insightsTotal}
           </p>
+          {previousAttempt && (
+            <p
+              className={`mt-1 text-sm font-medium ${
+                delta > 0
+                  ? 'text-green-600 dark:text-green-400'
+                  : delta < 0
+                    ? 'text-red-600 dark:text-red-400'
+                    : 'text-gray-500 dark:text-gray-400'
+              }`}
+            >
+              {delta > 0 ? '↑' : delta < 0 ? '↓' : '='} {delta > 0 ? `+${delta}` : delta} к прошлой попытке
+              с {persona.name}
+            </p>
+          )}
         </header>
 
         <section className="flex-1 overflow-y-auto">
