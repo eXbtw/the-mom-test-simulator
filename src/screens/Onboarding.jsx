@@ -66,25 +66,25 @@ export default function Onboarding({ onStart, onShowRules }) {
 
   return (
     <div className="h-full w-full overflow-y-auto">
-      <div className="mx-auto flex h-full w-full max-w-2xl flex-col px-6 py-10">
+      <div className="mx-auto flex h-full w-full max-w-2xl flex-col px-6 py-8">
         <div className="mb-6 flex items-center justify-between">
           <Logo />
           <ThemeToggle />
         </div>
 
         {step === 'branch' && (
-          <div className="animate-hero-in mb-8">
+          <div className="animate-hero-in mb-6">
             <TranscriptHero />
-            <p className="mx-auto mt-4 max-w-sm text-center text-sm italic text-gray-500 dark:text-gray-400">
+            <p className="mx-auto mt-3 max-w-sm text-center text-sm italic text-gray-500 dark:text-gray-400">
               «Вам соврут, если вы зададите плохой вопрос»
               <span className="mt-1 block not-italic text-xs text-gray-400 dark:text-gray-500">
                 — Роб Фицпатрик, «Спроси маму»
               </span>
             </p>
-            <div className="mt-4 flex justify-center">
+            <div className="mt-3 flex justify-center">
               <TakesRotator />
             </div>
-            <div className="mt-4 flex justify-center">
+            <div className="mt-3 flex justify-center">
               <button
                 type="button"
                 onClick={onShowRules}
@@ -97,7 +97,7 @@ export default function Onboarding({ onStart, onShowRules }) {
           </div>
         )}
 
-        <div className="mb-4 flex items-center gap-2">
+        <div className="mb-3 flex items-center gap-2">
           {step !== 'branch' && (
             <button
               type="button"
@@ -113,34 +113,37 @@ export default function Onboarding({ onStart, onShowRules }) {
 
         {step === 'branch' && (
           <div className="space-y-3">
-            {BRANCHES.map((branch, i) => (
-              <div
-                key={branch.id}
-                className="animate-hero-in"
-                style={{ animationDelay: `${100 + i * 80}ms` }}
-              >
-                <SelectionCard
-                  title={branch.label}
-                  subtitle={branch.description}
-                  icon={BRANCH_ICONS[branch.id]}
-                  onSelect={() => handleBranchSelect(branch.id)}
-                />
-              </div>
-            ))}
+            <div className="grid grid-cols-2 gap-3">
+              {BRANCHES.map((branch, i) => (
+                <div
+                  key={branch.id}
+                  className="animate-hero-in"
+                  style={{ animationDelay: `${100 + i * 80}ms` }}
+                >
+                  <SelectionCard
+                    compact
+                    title={branch.label}
+                    subtitle={branch.description}
+                    icon={BRANCH_ICONS[branch.id]}
+                    onSelect={() => handleBranchSelect(branch.id)}
+                  />
+                </div>
+              ))}
+            </div>
 
             <div className="animate-hero-in" style={{ animationDelay: `${100 + BRANCHES.length * 80}ms` }}>
               <button
                 type="button"
                 onClick={() => setStep('challenge')}
-                className="group flex w-full items-center gap-3 rounded-xl border border-[#C6402F]/25 bg-[#FDF2EF] p-4 text-left transition-colors hover:border-[#C6402F] hover:bg-[#FBE3DD] dark:border-[#FF5A42]/25 dark:bg-gray-800 dark:hover:border-[#FF5A42] dark:hover:bg-gray-700"
+                className="group flex w-full items-center gap-3 rounded-xl border border-[#C6402F]/25 bg-[#FDF2EF] p-3 text-left transition-colors hover:border-[#C6402F] hover:bg-[#FBE3DD] dark:border-[#FF5A42]/25 dark:bg-gray-800 dark:hover:border-[#FF5A42] dark:hover:bg-gray-700"
               >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#C6402F]/10 text-[#C6402F] dark:bg-[#FF5A42]/15 dark:text-[#FF5A42]">
-                  <Zap size={18} />
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#C6402F]/10 text-[#C6402F] dark:bg-[#FF5A42]/15 dark:text-[#FF5A42]">
+                  <Zap size={16} />
                 </span>
                 <span className="min-w-0">
-                  <h3 className="font-semibold text-gray-900 dark:text-gray-100">⚡ Задача дня</h3>
-                  <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    Один фрагмент диалога, один ваш ответ — быстрая проверка навыка
+                  <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">⚡ Задача дня</h3>
+                  <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+                    Один фрагмент диалога, один ваш ответ
                   </p>
                 </span>
               </button>
@@ -174,7 +177,7 @@ export default function Onboarding({ onStart, onShowRules }) {
           <>
             <PersonaCard persona={persona} />
 
-            <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
+            <label className="mt-3 flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
               <input
                 type="checkbox"
                 checked={blindMode}
@@ -195,7 +198,7 @@ export default function Onboarding({ onStart, onShowRules }) {
             <button
               type="button"
               onClick={() => onStart(persona, blindMode)}
-              className="mt-4 w-full rounded-lg bg-[#C6402F] py-3 text-sm font-semibold text-white transition-colors hover:bg-[#A32F21]"
+              className="mt-3 w-full rounded-lg bg-[#C6402F] py-3 text-sm font-semibold text-white transition-colors hover:bg-[#A32F21]"
             >
               Начать интервью
             </button>

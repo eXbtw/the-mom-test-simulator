@@ -1,4 +1,24 @@
-export default function SelectionCard({ title, subtitle, icon: Icon, onSelect }) {
+export default function SelectionCard({ title, subtitle, icon: Icon, compact = false, onSelect }) {
+  if (compact) {
+    return (
+      <button
+        type="button"
+        onClick={onSelect}
+        className="group flex w-full flex-col items-center gap-2 rounded-xl border border-gray-200 bg-white p-4 text-center transition-colors hover:border-[#C6402F]/50 hover:bg-[#FDF2EF] dark:border-gray-700 dark:bg-gray-800 dark:hover:border-[#FF5A42]/50 dark:hover:bg-gray-700"
+      >
+        {Icon && (
+          <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-gray-100 text-gray-500 transition-colors group-hover:bg-[#C6402F]/10 group-hover:text-[#C6402F] dark:bg-gray-700 dark:text-gray-400 dark:group-hover:bg-[#FF5A42]/15 dark:group-hover:text-[#FF5A42]">
+            <Icon size={20} />
+          </span>
+        )}
+        <span>
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
+          {subtitle && <p className="mt-0.5 text-xs leading-snug text-gray-500 dark:text-gray-400">{subtitle}</p>}
+        </span>
+      </button>
+    )
+  }
+
   return (
     <button
       type="button"

@@ -52,7 +52,7 @@ export default function QuickChallenge({ onExit }) {
 
   return (
     <div className="h-full w-full overflow-y-auto">
-      <div className="mx-auto flex h-full w-full max-w-2xl flex-col px-6 py-10">
+      <div className="mx-auto flex h-full w-full max-w-2xl flex-col px-6 py-8">
         <div className="mb-6 flex items-center justify-between">
           <button
             type="button"
