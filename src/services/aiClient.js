@@ -37,3 +37,8 @@ export async function fetchChallengeFeedback(fragment, response) {
     response,
   })
 }
+
+export async function generateIdeaPersona(idea) {
+  const data = await postJson('/api/idea-persona', { idea })
+  return data.persona
+}

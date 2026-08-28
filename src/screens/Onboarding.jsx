@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { ArrowLeft, BookOpen, Briefcase, History, UserRound, Zap } from 'lucide-react'
+import { ArrowLeft, BookOpen, Briefcase, History, Lightbulb, UserRound, Zap } from 'lucide-react'
 import { BRANCHES, PERSONAS } from '../data/personas'
 import SelectionCard from '../components/SelectionCard'
 import PersonaCard from '../components/PersonaCard'
 import SavedPersonaRow from '../components/SavedPersonaRow'
 import CustomPersonaForm from '../components/CustomPersonaForm'
+import IdeaPersonaForm from '../components/IdeaPersonaForm'
 import ThemeToggle from '../components/ThemeToggle'
 import Logo from '../components/Logo'
 import TranscriptHero from '../components/TranscriptHero'
@@ -16,6 +17,7 @@ const STEP_TITLES = {
   branch: 'С кем тренируемся?',
   category: 'Выберите направление',
   custom: 'Своя сфера',
+  idea: 'Проверь свою идею',
   confirm: 'Ваш респондент',
 }
 
@@ -59,6 +61,13 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
     setStep('confirm')
   }
 
+  const handleIdeaGenerated = (generatedPersona) => {
+    setPersona(generatedPersona)
+    setConfirmOrigin('idea')
+    setIsSaved(false)
+    setStep('confirm')
+  }
+
   const handleToggleSave = () => {
     if (isSaved) {
       removeSavedPersona(persona.id)
@@ -75,7 +84,7 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
   }
 
   const goBack = () => {
-    if (step === 'category' || step === 'custom') {
+    if (step === 'category' || step === 'custom' || step === 'idea') {
       setBranchId(null)
       setStep('branch')
     } else if (step === 'confirm') {
@@ -181,6 +190,26 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
                 </span>
               </button>
             </div>
+
+            <div className="animate-hero-in" style={{ animationDelay: `${180 + BRANCHES.length * 80}ms` }}>
+              <button
+                type="button"
+                onClick={() => setStep('idea')}
+                className="group flex w-full items-center gap-3 rounded-xl border border-green-600/25 bg-green-50 p-3 text-left transition-colors hover:border-green-600 hover:bg-green-100 dark:border-green-500/25 dark:bg-gray-800 dark:hover:border-green-500 dark:hover:bg-gray-700"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-green-600/10 text-green-700 dark:bg-green-500/15 dark:text-green-400">
+                  <Lightbulb size={16} />
+                </span>
+                <span className="min-w-0">
+                  <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                    💡 Проверь свою идею
+                  </h3>
+                  <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+                    Опишите продукт — подберём респондента под вашу аудиторию
+                  </p>
+                </span>
+              </button>
+            </div>
           </div>
         )}
 
@@ -221,6 +250,8 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
         {step === 'custom' && (
           <CustomPersonaForm branch={branchId} onGenerated={handleGenerated} />
         )}
+
+        {step === 'idea' && <IdeaPersonaForm onGenerated={handleIdeaGenerated} />}
 
         {step === 'confirm' && persona && (
           <>
