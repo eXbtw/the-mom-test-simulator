@@ -2,6 +2,7 @@
 // won't sync across devices, but needs no auth/DB for an MVP.
 const HISTORY_KEY = 'mom-test-history'
 const SAVED_PERSONAS_KEY = 'mom-test-saved-personas'
+const UPCOMING_INTERVIEW_KEY = 'mom-test-upcoming-interview'
 const MAX_HISTORY = 50
 
 function readJson(key, fallback) {
@@ -51,4 +52,16 @@ export function removeSavedPersona(id) {
 
 export function isPersonaSaved(id) {
   return getSavedPersonas().some((p) => p.id === id)
+}
+
+export function getUpcomingInterview() {
+  return readJson(UPCOMING_INTERVIEW_KEY, null)
+}
+
+export function setUpcomingInterview(record) {
+  writeJson(UPCOMING_INTERVIEW_KEY, record)
+}
+
+export function clearUpcomingInterview() {
+  writeJson(UPCOMING_INTERVIEW_KEY, null)
 }

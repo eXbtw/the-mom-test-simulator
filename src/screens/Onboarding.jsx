@@ -6,12 +6,20 @@ import PersonaCard from '../components/PersonaCard'
 import SavedPersonaRow from '../components/SavedPersonaRow'
 import CustomPersonaForm from '../components/CustomPersonaForm'
 import IdeaPersonaForm from '../components/IdeaPersonaForm'
+import UpcomingInterviewBanner from '../components/UpcomingInterviewBanner'
 import ThemeToggle from '../components/ThemeToggle'
 import Logo from '../components/Logo'
 import TranscriptHero from '../components/TranscriptHero'
 import TakesRotator from '../components/TakesRotator'
 import QuickChallenge from './QuickChallenge'
-import { getSavedPersonas, isPersonaSaved, removeSavedPersona, savePersona } from '../utils/storage'
+import {
+  clearUpcomingInterview,
+  getSavedPersonas,
+  getUpcomingInterview,
+  isPersonaSaved,
+  removeSavedPersona,
+  savePersona,
+} from '../utils/storage'
 
 const STEP_TITLES = {
   branch: 'С кем тренируемся?',
@@ -34,6 +42,17 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
   const [blindMode, setBlindMode] = useState(false)
   const [savedPersonas, setSavedPersonas] = useState(() => getSavedPersonas())
   const [isSaved, setIsSaved] = useState(false)
+  const [ideaPrefill, setIdeaPrefill] = useState('')
+  const [upcomingInterview, setUpcomingInterviewState] = useState(() => {
+    const record = getUpcomingInterview()
+    if (!record) return null
+    const daysOld = Math.round((Date.now() - new Date(`${record.date}T00:00:00`)) / 86400000)
+    if (daysOld > 3) {
+      clearUpcomingInterview()
+      return null
+    }
+    return record
+  })
 
   const categories = branchId
     ? PERSONAS.filter((p) => p.branch === branchId)
@@ -83,6 +102,24 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
     setSavedPersonas(getSavedPersonas())
   }
 
+  const handlePracticeFromReminder = () => {
+    const savedMatch = getSavedPersonas().find((p) => p.id === upcomingInterview.personaId)
+    if (savedMatch) {
+      setPersona(savedMatch)
+      setConfirmOrigin('idea')
+      setIsSaved(true)
+      setStep('confirm')
+    } else {
+      setIdeaPrefill(upcomingInterview.idea)
+      setStep('idea')
+    }
+  }
+
+  const handleDismissReminder = () => {
+    clearUpcomingInterview()
+    setUpcomingInterviewState(null)
+  }
+
   const goBack = () => {
     if (step === 'category' || step === 'custom' || step === 'idea') {
       setBranchId(null)
@@ -104,6 +141,14 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
           <Logo />
           <ThemeToggle />
         </div>
+
+        {step === 'branch' && upcomingInterview && (
+          <UpcomingInterviewBanner
+            record={upcomingInterview}
+            onPractice={handlePracticeFromReminder}
+            onDismiss={handleDismissReminder}
+          />
+        )}
 
         {step === 'branch' && (
           <div className="animate-hero-in mb-6">
@@ -252,7 +297,9 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
           <CustomPersonaForm branch={branchId} onGenerated={handleGenerated} />
         )}
 
-        {step === 'idea' && <IdeaPersonaForm onGenerated={handleIdeaGenerated} />}
+        {step === 'idea' && (
+          <IdeaPersonaForm initialIdea={ideaPrefill} onGenerated={handleIdeaGenerated} />
+        )}
 
         {step === 'confirm' && persona && (
           <>
