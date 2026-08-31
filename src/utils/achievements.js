@@ -1,3 +1,5 @@
+import { EyeOff, Flame, Gem, Library, Target, Trophy } from 'lucide-react'
+
 export function computeStreak(history) {
   let streak = 0
   for (const entry of history) {
@@ -10,38 +12,38 @@ export function computeStreak(history) {
 const DEFINITIONS = [
   {
     id: 'first_interview',
-    icon: '🎯',
+    icon: Target,
     label: 'Первое интервью',
     check: (history) => history.length >= 1,
   },
   {
     id: 'hot_streak',
-    icon: '🔥',
+    icon: Flame,
     label: '3 подряд ≥60',
     check: (history) => computeStreak(history) >= 3,
   },
   {
     id: 'flawless',
-    icon: '💎',
+    icon: Gem,
     label: 'Без ошибок',
     check: (history) => history.some((h) => h.mistakesCount === 0),
   },
   {
     id: 'personal_best',
-    icon: '🏆',
+    icon: Trophy,
     label: 'Личный рекорд',
     check: (history) =>
       history.length > 0 && history[0].score === Math.max(...history.map((h) => h.score)),
   },
   {
     id: 'marathon',
-    icon: '📚',
+    icon: Library,
     label: '10 интервью',
     check: (history) => history.length >= 10,
   },
   {
     id: 'brave',
-    icon: '🙈',
+    icon: EyeOff,
     label: 'Смельчак',
     check: (history) => history.some((h) => h.blindMode),
   },

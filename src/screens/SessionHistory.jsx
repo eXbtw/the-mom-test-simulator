@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowLeft, Trash2 } from 'lucide-react'
+import { ArrowLeft, EyeOff, Trash2 } from 'lucide-react'
 import Logo from '../components/Logo'
 import ThemeToggle from '../components/ThemeToggle'
 import { clearHistory, getHistory } from '../utils/storage'
@@ -87,22 +87,28 @@ export default function SessionHistory({ onExit }) {
             </div>
 
             <div className="mb-4 flex gap-2 overflow-x-auto pb-1">
-              {achievements.map((a) => (
-                <div
-                  key={a.id}
-                  title={a.label}
-                  className={`flex shrink-0 flex-col items-center gap-1 rounded-xl border px-3 py-2 text-center ${
-                    a.unlocked
-                      ? 'border-[#C6402F]/25 bg-[#FDF2EF] dark:border-[#FF5A42]/25 dark:bg-gray-800'
-                      : 'border-gray-200 bg-gray-50 opacity-40 dark:border-gray-700 dark:bg-gray-800'
-                  }`}
-                >
-                  <span className="text-lg leading-none">{a.icon}</span>
-                  <span className="max-w-[70px] text-[10px] leading-tight text-gray-600 dark:text-gray-400">
-                    {a.label}
-                  </span>
-                </div>
-              ))}
+              {achievements.map((a) => {
+                const Icon = a.icon
+                return (
+                  <div
+                    key={a.id}
+                    title={a.label}
+                    className={`flex shrink-0 flex-col items-center gap-1.5 rounded-xl border px-3 py-2.5 text-center ${
+                      a.unlocked
+                        ? 'border-[#C6402F]/25 bg-[#FDF2EF] dark:border-[#FF5A42]/25 dark:bg-gray-800'
+                        : 'border-gray-200 bg-gray-50 opacity-40 dark:border-gray-700 dark:bg-gray-800'
+                    }`}
+                  >
+                    <Icon
+                      size={18}
+                      className={a.unlocked ? 'text-[#C6402F] dark:text-[#FF5A42]' : 'text-gray-400'}
+                    />
+                    <span className="max-w-[70px] text-[10px] leading-tight text-gray-600 dark:text-gray-400">
+                      {a.label}
+                    </span>
+                  </div>
+                )
+              })}
             </div>
 
             <div className="flex-1 space-y-2 overflow-y-auto pb-2">
@@ -112,9 +118,9 @@ export default function SessionHistory({ onExit }) {
                   className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-800"
                 >
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-medium text-gray-900 dark:text-gray-100">
+                    <p className="flex items-center gap-1.5 truncate text-sm font-medium text-gray-900 dark:text-gray-100">
                       {entry.personaName}
-                      {entry.blindMode && <span className="ml-1.5 text-xs">🙈</span>}
+                      {entry.blindMode && <EyeOff size={12} className="shrink-0 text-gray-400" />}
                     </p>
                     <p className="truncate text-xs text-gray-500 dark:text-gray-400">
                       {entry.categoryLabel ?? entry.personaRole} · {formatDate(entry.date)}

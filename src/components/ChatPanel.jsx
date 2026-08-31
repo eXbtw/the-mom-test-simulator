@@ -26,7 +26,7 @@ export default function ChatPanel({ messages, onSend, isThinking }) {
         ))}
         {isThinking && (
           <div className="flex justify-start">
-            <div className="rounded-2xl rounded-bl-sm bg-blue-600/70 px-4 py-2 text-sm text-white dark:bg-blue-500/70">
+            <div className="rounded-2xl rounded-bl-sm bg-[#C6402F]/70 px-4 py-2 text-sm text-white">
               печатает…
             </div>
           </div>
@@ -38,11 +38,11 @@ export default function ChatPanel({ messages, onSend, isThinking }) {
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           placeholder="Задайте вопрос…"
-          className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
+          className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[#C6402F] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-[#FF5A42]"
         />
         <button
           type="submit"
-          className="flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
+          className="flex items-center justify-center rounded-lg bg-[#C6402F] px-4 py-2 text-white transition-colors hover:bg-[#A32F21] disabled:opacity-50"
           disabled={!draft.trim()}
         >
           <Send size={18} />

@@ -40,12 +40,12 @@ export default function ScoreWidget({ score }) {
           y="60"
           textAnchor="middle"
           dominantBaseline="central"
-          className="rotate-90 origin-center fill-gray-900 text-2xl font-semibold dark:fill-gray-100"
+          className="rotate-90 origin-center fill-gray-900 font-display text-2xl font-bold dark:fill-gray-100"
         >
           {clamped}
         </text>
       </svg>
-      <span className="hidden text-sm text-gray-500 dark:text-gray-400 md:block">Score</span>
+      <span className="hidden text-sm text-gray-500 dark:text-gray-400 md:block">Счёт</span>
     </div>
   )
 }

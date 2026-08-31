@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BookOpen, Copy, Download, History, Home, Printer } from 'lucide-react'
+import { BookOpen, Copy, Download, EyeOff, History, Home, Printer, Sparkles } from 'lucide-react'
 import MistakeAccordion from '../components/MistakeAccordion'
 import ThemeToggle from '../components/ThemeToggle'
 import PrintableReport from '../components/PrintableReport'
@@ -45,8 +45,9 @@ export default function Results({ result, persona, onRestart, onShowRules, onSho
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Итоги сессии
             {blindMode && (
-              <span className="ml-2 rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-semibold text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
-                🙈 Пройдено вслепую
+              <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                <EyeOff size={10} />
+                Пройдено вслепую
               </span>
             )}
           </p>
@@ -74,16 +75,20 @@ export default function Results({ result, persona, onRestart, onShowRules, onSho
 
         {newAchievements?.length > 0 && (
           <div className="animate-take-fade-in mb-6 shrink-0 rounded-xl border border-[#C6402F]/25 bg-[#FDF2EF] p-3 text-center dark:border-[#FF5A42]/25 dark:bg-gray-800">
-            <p className="text-sm font-semibold text-[#C6402F] dark:text-[#FF5A42]">
-              🎉 Новое достижение{newAchievements.length > 1 ? 'я' : ''}!
+            <p className="flex items-center justify-center gap-1.5 text-sm font-semibold text-[#C6402F] dark:text-[#FF5A42]">
+              <Sparkles size={14} />
+              Новое достижение{newAchievements.length > 1 ? 'я' : ''}!
             </p>
             <div className="mt-2 flex flex-wrap justify-center gap-4">
-              {newAchievements.map((a) => (
-                <div key={a.id} className="flex flex-col items-center gap-1">
-                  <span className="text-2xl leading-none">{a.icon}</span>
-                  <span className="text-xs text-gray-600 dark:text-gray-400">{a.label}</span>
-                </div>
-              ))}
+              {newAchievements.map((a) => {
+                const Icon = a.icon
+                return (
+                  <div key={a.id} className="flex flex-col items-center gap-1">
+                    <Icon size={20} className="text-[#C6402F] dark:text-[#FF5A42]" />
+                    <span className="text-xs text-gray-600 dark:text-gray-400">{a.label}</span>
+                  </div>
+                )
+              })}
             </div>
           </div>
         )}
@@ -122,7 +127,7 @@ export default function Results({ result, persona, onRestart, onShowRules, onSho
               className="flex items-center gap-1.5 rounded-lg border border-gray-300 px-3 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
             >
               <Copy size={14} />
-              {copied ? 'Скопировано!' : 'Copy as Notion Page'}
+              {copied ? 'Скопировано!' : 'Скопировать для Notion'}
             </button>
             <button
               type="button"
@@ -146,7 +151,7 @@ export default function Results({ result, persona, onRestart, onShowRules, onSho
         <button
           type="button"
           onClick={onRestart}
-          className="mt-6 w-full shrink-0 rounded-lg bg-blue-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+          className="mt-6 w-full shrink-0 rounded-lg bg-[#C6402F] py-3 text-sm font-semibold text-white transition-colors hover:bg-[#A32F21]"
         >
           Попробовать снова
         </button>

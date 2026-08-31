@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowLeft, BookOpen, Briefcase, History, Lightbulb, UserRound, Zap } from 'lucide-react'
+import { ArrowLeft, BookOpen, Briefcase, EyeOff, History, Lightbulb, PenLine, UserRound, Zap } from 'lucide-react'
 import { BRANCHES, PERSONAS } from '../data/personas'
 import SelectionCard from '../components/SelectionCard'
 import PersonaCard from '../components/PersonaCard'
@@ -183,7 +183,7 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
                   <Zap size={16} />
                 </span>
                 <span className="min-w-0">
-                  <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">⚡ Задача дня</h3>
+                  <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Задача дня</h3>
                   <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
                     Один фрагмент диалога, один ваш ответ
                   </p>
@@ -195,14 +195,14 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
               <button
                 type="button"
                 onClick={() => setStep('idea')}
-                className="group flex w-full items-center gap-3 rounded-xl border border-green-600/25 bg-green-50 p-3 text-left transition-colors hover:border-green-600 hover:bg-green-100 dark:border-green-500/25 dark:bg-gray-800 dark:hover:border-green-500 dark:hover:bg-gray-700"
+                className="group flex w-full items-center gap-3 rounded-xl border border-[#C6402F]/25 bg-[#FDF2EF] p-3 text-left transition-colors hover:border-[#C6402F] hover:bg-[#FBE3DD] dark:border-[#FF5A42]/25 dark:bg-gray-800 dark:hover:border-[#FF5A42] dark:hover:bg-gray-700"
               >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-green-600/10 text-green-700 dark:bg-green-500/15 dark:text-green-400">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#C6402F]/10 text-[#C6402F] dark:bg-[#FF5A42]/15 dark:text-[#FF5A42]">
                   <Lightbulb size={16} />
                 </span>
                 <span className="min-w-0">
                   <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                    💡 Проверь свою идею
+                    Проверь свою идею
                   </h3>
                   <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
                     Опишите продукт — подберём респондента под вашу аудиторию
@@ -224,8 +224,9 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
               />
             ))}
             <SelectionCard
-              title="✏️ Своя сфера"
+              title="Своя сфера"
               subtitle="Опишите нишу своими словами — респондента сгенерирует AI"
+              icon={PenLine}
               onSelect={() => setStep('custom')}
             />
 
@@ -269,8 +270,9 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
                 className="mt-0.5 h-4 w-4 shrink-0 accent-[#C6402F]"
               />
               <span>
-                <span className="block text-sm font-medium text-gray-900 dark:text-gray-100">
-                  🙈 Режим вслепую
+                <span className="flex items-center gap-1.5 text-sm font-medium text-gray-900 dark:text-gray-100">
+                  <EyeOff size={14} />
+                  Режим вслепую
                 </span>
                 <span className="block text-xs text-gray-500 dark:text-gray-400">
                   Панель аудитора и подсказки будут скрыты во время разговора — счёт и разбор

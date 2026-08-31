@@ -50,7 +50,7 @@ export default function RulesGuide({ onExit }) {
                     className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
                       isGood
                         ? 'bg-green-100 text-green-600 dark:bg-green-900/40 dark:text-green-300'
-                        : 'bg-red-100 text-red-600 dark:bg-red-900/40 dark:text-red-300'
+                        : 'bg-[#C6402F]/10 text-[#C6402F] dark:bg-[#FF5A42]/15 dark:text-[#FF5A42]'
                     }`}
                   >
                     <Icon size={16} />
@@ -60,7 +60,7 @@ export default function RulesGuide({ onExit }) {
                 <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">{rule.explanation}</p>
                 <div className="mt-3 space-y-1.5 text-sm">
                   {rule.bad && (
-                    <p className="rounded-lg bg-red-50 px-3 py-2 text-red-700 dark:bg-red-900/30 dark:text-red-300">
+                    <p className="rounded-lg bg-[#FDF2EF] px-3 py-2 text-[#C6402F] dark:bg-gray-900 dark:text-[#FF5A42]">
                       ✗ «{rule.bad}»
                     </p>
                   )}

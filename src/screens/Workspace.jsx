@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Clock, Home } from 'lucide-react'
+import { Clock, EyeOff, Home } from 'lucide-react'
 import ChatPanel from '../components/ChatPanel'
 import ScoreWidget from '../components/ScoreWidget'
 import ScoreDeltaPopup from '../components/ScoreDeltaPopup'
@@ -143,8 +143,9 @@ export default function Workspace({ persona, blindMode, onFinish, onExit }) {
             <p className="truncate text-xs text-gray-500 dark:text-gray-400 md:text-sm">
               {persona.role} · {persona.difficulty} · {persona.trafficSource.label}
               {blindMode && (
-                <span className="ml-2 rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-semibold text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
-                  🙈 Вслепую
+                <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                  <EyeOff size={10} />
+                  Вслепую
                 </span>
               )}
             </p>
@@ -224,7 +225,7 @@ export default function Workspace({ persona, blindMode, onFinish, onExit }) {
               <button
                 type="button"
                 onClick={handleStart}
-                className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+                className="rounded-lg bg-[#C6402F] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#A32F21]"
               >
                 Начать интервью
               </button>

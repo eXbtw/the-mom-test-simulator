@@ -1,7 +1,7 @@
 const STYLES = {
-  leading_question: 'bg-red-50 border-red-300 text-red-700 dark:bg-red-900/40 dark:border-red-700 dark:text-red-300',
-  hypothetical: 'bg-red-50 border-red-300 text-red-700 dark:bg-red-900/40 dark:border-red-700 dark:text-red-300',
-  pitching: 'bg-red-50 border-red-300 text-red-700 dark:bg-red-900/40 dark:border-red-700 dark:text-red-300',
+  leading_question: 'bg-[#FDF2EF] border-[#C6402F]/30 text-[#C6402F] dark:bg-gray-800 dark:border-[#FF5A42]/30 dark:text-[#FF5A42]',
+  hypothetical: 'bg-[#FDF2EF] border-[#C6402F]/30 text-[#C6402F] dark:bg-gray-800 dark:border-[#FF5A42]/30 dark:text-[#FF5A42]',
+  pitching: 'bg-[#FDF2EF] border-[#C6402F]/30 text-[#C6402F] dark:bg-gray-800 dark:border-[#FF5A42]/30 dark:text-[#FF5A42]',
   good_question: 'bg-green-50 border-green-300 text-green-700 dark:bg-green-900/40 dark:border-green-700 dark:text-green-300',
 }
 

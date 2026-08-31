@@ -32,7 +32,7 @@ export default function MistakeAccordion({ mistakes }) {
             {isOpen && (
               <div className="space-y-2 px-4 pb-4 text-sm">
                 <p>
-                  <span className="font-medium text-red-700 dark:text-red-400">Почему это ошибка: </span>
+                  <span className="font-medium text-[#C6402F] dark:text-[#FF5A42]">Почему это ошибка: </span>
                   <span className="text-gray-600 dark:text-gray-400">{mistake.why}</span>
                 </p>
                 <p>

@@ -21,7 +21,7 @@ export default function PersonaAvatar({ categoryId, size = 'md' }) {
 
   return (
     <div
-      className={`flex ${box} shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-300`}
+      className={`flex ${box} shrink-0 items-center justify-center rounded-full bg-[#C6402F]/10 text-[#C6402F] dark:bg-[#FF5A42]/15 dark:text-[#FF5A42]`}
     >
       <Icon size={icon} />
     </div>
