@@ -10,6 +10,7 @@ import PersonaContextPanel from '../components/PersonaContextPanel'
 import ThemeToggle from '../components/ThemeToggle'
 import { fetchEvaluation, fetchPersonaReply } from '../services/aiClient'
 import { gradeForScore } from '../utils/grading'
+import { computeTrust } from '../utils/trust'
 
 const MISTAKE_TYPES = new Set(['hypothetical', 'leading_question', 'pitching'])
 const TIMER_SECONDS = 10 * 60
@@ -51,6 +52,7 @@ export default function Workspace({ persona, blindMode, onFinish, onExit }) {
 
   const handleSend = async (text) => {
     const history = messages.map((m) => ({ role: m.role, text: m.text }))
+    const trust = computeTrust(messages)
     const userMsgId = nextId()
     setMessages((prev) => [...prev, { id: userMsgId, role: 'user', text }])
     setIsThinking(true)
@@ -58,7 +60,7 @@ export default function Workspace({ persona, blindMode, onFinish, onExit }) {
     try {
       const [result, reply] = await Promise.all([
         fetchEvaluation(text),
-        fetchPersonaReply(persona, history, text),
+        fetchPersonaReply(persona, history, text, trust),
       ])
 
       if (result) {

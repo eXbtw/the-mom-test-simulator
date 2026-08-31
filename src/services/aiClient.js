@@ -11,8 +11,8 @@ async function postJson(url, body) {
   return data
 }
 
-export async function fetchPersonaReply(persona, history, message) {
-  const data = await postJson('/api/persona', { persona, history, message })
+export async function fetchPersonaReply(persona, history, message, trust) {
+  const data = await postJson('/api/persona', { persona, history, message, trust })
   return data.reply
 }
 
