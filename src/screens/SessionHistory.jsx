@@ -3,6 +3,7 @@ import { ArrowLeft, ChevronRight, EyeOff, Trash2 } from 'lucide-react'
 import Logo from '../components/Logo'
 import ThemeToggle from '../components/ThemeToggle'
 import WeaknessRadar from '../components/WeaknessRadar'
+import ArchetypeBadge from '../components/ArchetypeBadge'
 import TranscriptReplay from '../components/TranscriptReplay'
 import { clearHistory, getHistory } from '../utils/storage'
 import { computeAchievements, computeStreak } from '../utils/achievements'
@@ -118,6 +119,7 @@ export default function SessionHistory({ onExit }) {
               })}
             </div>
 
+            <ArchetypeBadge history={history} />
             <WeaknessRadar history={history} />
 
             <div className="flex-1 space-y-2 overflow-y-auto pb-2">

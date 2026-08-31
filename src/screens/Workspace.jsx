@@ -12,7 +12,7 @@ import { fetchEvaluation, fetchPersonaReply } from '../services/aiClient'
 import { gradeForScore } from '../utils/grading'
 
 const MISTAKE_TYPES = new Set(['hypothetical', 'leading_question', 'pitching'])
-const TIMER_SECONDS = 4 * 60
+const TIMER_SECONDS = 10 * 60
 
 let messageId = 0
 const nextId = () => ++messageId

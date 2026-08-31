@@ -47,6 +47,7 @@ export function computeWeaknessProfile(history) {
     items,
     totalMistakes,
     totalEvaluated,
+    goodQuestionCount: counts.good_question,
   }
 }
 
@@ -55,4 +56,42 @@ export function getChecklistTips(profile, max = 2) {
     return ['Задавай открытые вопросы о прошлом опыте собеседника, а не о гипотезах и будущем']
   }
   return profile.items.slice(0, max).map((item) => META[item.type].tip)
+}
+
+const MIN_EVALUATED_FOR_ARCHETYPE = 5
+
+const ARCHETYPES = {
+  good_question: {
+    id: 'master',
+    label: 'Мастер Mom Test',
+    description: 'Ты задаёшь открытые вопросы о реальном опыте — именно так и работает метод.',
+  },
+  leading_question: {
+    id: 'inquisitor',
+    label: 'Дознаватель',
+    description: 'Ты часто подсказываешь ответ прямо в вопросе. Попробуй спрашивать нейтральнее.',
+  },
+  hypothetical: {
+    id: 'dreamer',
+    label: 'Мечтатель',
+    description: 'Тебя тянет спросить про будущее и гипотезы вместо того, что уже было на самом деле.',
+  },
+  pitching: {
+    id: 'salesman',
+    label: 'Продавец',
+    description: 'Хочется поскорее показать решение — но сначала стоит до конца понять проблему.',
+  },
+}
+
+export function computeArchetype(profile) {
+  if (profile.totalEvaluated < MIN_EVALUATED_FOR_ARCHETYPE) return null
+
+  const candidates = [
+    { type: 'good_question', count: profile.goodQuestionCount },
+    ...profile.items.map((item) => ({ type: item.type, count: item.count })),
+  ]
+  const top = candidates.reduce((best, c) => (c.count > best.count ? c : best))
+
+  if (top.count === 0) return null
+  return ARCHETYPES[top.type]
 }
