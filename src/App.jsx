@@ -51,6 +51,7 @@ function App() {
         insightsTotal: sessionResult.insightsTotal,
         mistakesCount: sessionResult.mistakes.length,
         blindMode: sessionResult.blindMode,
+        transcript: sessionResult.messages,
       })
 
       const afterAchievements = computeAchievements(getHistory())

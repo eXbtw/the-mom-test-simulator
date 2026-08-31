@@ -14,12 +14,14 @@ import TakesRotator from '../components/TakesRotator'
 import QuickChallenge from './QuickChallenge'
 import {
   clearUpcomingInterview,
+  getHistory,
   getSavedPersonas,
   getUpcomingInterview,
   isPersonaSaved,
   removeSavedPersona,
   savePersona,
 } from '../utils/storage'
+import { computeWeaknessProfile, getChecklistTips } from '../utils/weaknessProfile'
 
 const STEP_TITLES = {
   branch: 'С кем тренируемся?',
@@ -145,6 +147,7 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
         {step === 'branch' && upcomingInterview && (
           <UpcomingInterviewBanner
             record={upcomingInterview}
+            tips={getChecklistTips(computeWeaknessProfile(getHistory()))}
             onPractice={handlePracticeFromReminder}
             onDismiss={handleDismissReminder}
           />

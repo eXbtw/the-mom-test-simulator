@@ -51,7 +51,8 @@ export default function Workspace({ persona, blindMode, onFinish, onExit }) {
 
   const handleSend = async (text) => {
     const history = messages.map((m) => ({ role: m.role, text: m.text }))
-    setMessages((prev) => [...prev, { id: nextId(), role: 'user', text }])
+    const userMsgId = nextId()
+    setMessages((prev) => [...prev, { id: userMsgId, role: 'user', text }])
     setIsThinking(true)
 
     try {
@@ -62,6 +63,13 @@ export default function Workspace({ persona, blindMode, onFinish, onExit }) {
 
       if (result) {
         setScore((prev) => Math.max(0, Math.min(100, prev + result.delta)))
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === userMsgId
+              ? { ...m, evalType: result.type, evalWhy: result.message, evalSuggestion: result.suggestion }
+              : m,
+          ),
+        )
 
         if (!blindMode) {
           setScoreDelta({ id: nextId(), value: result.delta })

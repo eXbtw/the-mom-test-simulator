@@ -1,7 +1,9 @@
 import { useState } from 'react'
-import { ArrowLeft, EyeOff, Trash2 } from 'lucide-react'
+import { ArrowLeft, ChevronRight, EyeOff, Trash2 } from 'lucide-react'
 import Logo from '../components/Logo'
 import ThemeToggle from '../components/ThemeToggle'
+import WeaknessRadar from '../components/WeaknessRadar'
+import TranscriptReplay from '../components/TranscriptReplay'
 import { clearHistory, getHistory } from '../utils/storage'
 import { computeAchievements, computeStreak } from '../utils/achievements'
 
@@ -22,6 +24,11 @@ function formatDate(iso) {
 
 export default function SessionHistory({ onExit }) {
   const [history, setHistory] = useState(() => getHistory())
+  const [openEntry, setOpenEntry] = useState(null)
+
+  if (openEntry) {
+    return <TranscriptReplay entry={openEntry} onBack={() => setOpenEntry(null)} />
+  }
 
   const handleClear = () => {
     if (!window.confirm('Удалить всю историю интервью? Это необратимо.')) return
@@ -111,6 +118,8 @@ export default function SessionHistory({ onExit }) {
               })}
             </div>
 
+            <WeaknessRadar history={history} />
+
             <div className="flex-1 space-y-2 overflow-y-auto pb-2">
               {history.map((entry) => (
                 <div
@@ -126,11 +135,23 @@ export default function SessionHistory({ onExit }) {
                       {entry.categoryLabel ?? entry.personaRole} · {formatDate(entry.date)}
                     </p>
                   </div>
-                  <div className="shrink-0 text-right">
-                    <p className={`font-display text-base font-bold ${scoreColor(entry.score)}`}>
-                      {entry.score}
-                    </p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500">{entry.grade}</p>
+                  <div className="flex shrink-0 items-center gap-1.5">
+                    <div className="text-right">
+                      <p className={`font-display text-base font-bold ${scoreColor(entry.score)}`}>
+                        {entry.score}
+                      </p>
+                      <p className="text-xs text-gray-400 dark:text-gray-500">{entry.grade}</p>
+                    </div>
+                    {entry.transcript?.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => setOpenEntry(entry)}
+                        aria-label="Разбор интервью"
+                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-[#C6402F] dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-[#FF5A42]"
+                      >
+                        <ChevronRight size={16} />
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}

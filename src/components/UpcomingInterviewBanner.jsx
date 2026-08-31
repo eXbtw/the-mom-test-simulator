@@ -7,7 +7,7 @@ function daysUntil(dateStr) {
   return Math.round((target - today) / 86400000)
 }
 
-export default function UpcomingInterviewBanner({ record, onPractice, onDismiss }) {
+export default function UpcomingInterviewBanner({ record, tips = [], onPractice, onDismiss }) {
   const days = daysUntil(record.date)
   const isPast = days < 0
 
@@ -18,7 +18,7 @@ export default function UpcomingInterviewBanner({ record, onPractice, onDismiss 
   else label = 'Как прошло интервью с клиентом?'
 
   return (
-    <div className="animate-hero-in mb-4 flex items-center gap-3 rounded-xl border border-[#C6402F]/25 bg-[#FDF2EF] p-3 dark:border-[#FF5A42]/25 dark:bg-gray-800">
+    <div className="animate-hero-in mb-4 flex items-start gap-3 rounded-xl border border-[#C6402F]/25 bg-[#FDF2EF] p-3 dark:border-[#FF5A42]/25 dark:bg-gray-800">
       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#C6402F]/10 text-[#C6402F] dark:bg-[#FF5A42]/15 dark:text-[#FF5A42]">
         <CalendarClock size={16} />
       </span>
@@ -28,6 +28,15 @@ export default function UpcomingInterviewBanner({ record, onPractice, onDismiss 
           <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
             Потренируйтесь ещё раз перед разговором
           </p>
+        )}
+        {!isPast && tips.length > 0 && (
+          <ul className="mt-1.5 space-y-0.5">
+            {tips.map((tip, i) => (
+              <li key={i} className="text-xs text-gray-500 dark:text-gray-400">
+                · {tip}
+              </li>
+            ))}
+          </ul>
         )}
       </div>
       <button
