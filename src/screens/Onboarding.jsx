@@ -138,8 +138,8 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
 
   return (
     <div className="h-full w-full overflow-y-auto">
-      <div className="justify-safe-center mx-auto flex h-full w-full max-w-2xl flex-col px-6 py-8">
-        <div className="mb-6 flex items-center justify-between">
+      <div className="justify-safe-center mx-auto flex h-full w-full max-w-2xl flex-col px-6 py-6">
+        <div className="mb-4 flex items-center justify-between">
           <Logo />
           <ThemeToggle />
         </div>
@@ -154,9 +154,9 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
         )}
 
         {step === 'branch' && (
-          <div className="animate-hero-in mb-8">
+          <div className="animate-hero-in mb-5">
             <TranscriptHero />
-            <div className="mx-auto mt-4 max-w-sm text-center">
+            <div className="mx-auto mt-3 max-w-sm text-center">
               <p className="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
                 <span className="mr-0.5 font-display text-[#C6402F] dark:text-[#FF5A42]">”</span>
                 Вам соврут, если вы зададите плохой вопрос
@@ -166,7 +166,7 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
               </p>
               <TakesRotator />
             </div>
-            <div className="mt-4 flex items-center justify-center gap-3 border-t border-gray-200/70 pt-3 dark:border-gray-800">
+            <div className="mt-3 flex items-center justify-center gap-3 border-t border-gray-200/70 pt-2.5 dark:border-gray-800">
               <button
                 type="button"
                 onClick={onShowRules}
@@ -188,7 +188,7 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
           </div>
         )}
 
-        <div className="mb-3 flex items-center gap-2">
+        <div className="mb-2 flex items-center gap-2">
           {step !== 'branch' && (
             <button
               type="button"
@@ -205,8 +205,8 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
         </div>
 
         {step === 'branch' && (
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-2.5">
               {BRANCHES.map((branch, i) => (
                 <div
                   key={branch.id}
@@ -237,7 +237,7 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
                 <button
                   type="button"
                   onClick={() => setStep('challenge')}
-                  className="group flex w-full items-center gap-3 rounded-lg border-y border-r border-l-[3px] border-gray-200 border-l-gray-200 bg-white py-3 pl-3.5 pr-4 text-left transition-all duration-200 ease-out hover:border-l-[#C6402F] hover:bg-[#FDF2EF]/60 dark:border-gray-700 dark:border-l-gray-700 dark:bg-gray-800 dark:hover:border-l-[#FF5A42] dark:hover:bg-gray-700/50"
+                  className="group flex w-full items-center gap-3 rounded-lg border-y border-r border-l-[3px] border-gray-200 border-l-gray-200 bg-white py-2.5 pl-3.5 pr-4 text-left transition-all duration-200 ease-out hover:border-l-[#C6402F] hover:bg-[#FDF2EF]/60 dark:border-gray-700 dark:border-l-gray-700 dark:bg-gray-800 dark:hover:border-l-[#FF5A42] dark:hover:bg-gray-700/50"
                 >
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-gray-500 transition-colors group-hover:bg-[#C6402F]/10 group-hover:text-[#C6402F] dark:bg-gray-700 dark:text-gray-400 dark:group-hover:bg-[#FF5A42]/15 dark:group-hover:text-[#FF5A42]">
                     <Zap size={16} />
@@ -257,7 +257,7 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
                 <button
                   type="button"
                   onClick={() => setStep('idea')}
-                  className="group flex w-full items-center gap-3 rounded-lg border-y border-r border-l-[3px] border-gray-200 border-l-gray-200 bg-white py-3 pl-3.5 pr-4 text-left transition-all duration-200 ease-out hover:border-l-[#C6402F] hover:bg-[#FDF2EF]/60 dark:border-gray-700 dark:border-l-gray-700 dark:bg-gray-800 dark:hover:border-l-[#FF5A42] dark:hover:bg-gray-700/50"
+                  className="group flex w-full items-center gap-3 rounded-lg border-y border-r border-l-[3px] border-gray-200 border-l-gray-200 bg-white py-2.5 pl-3.5 pr-4 text-left transition-all duration-200 ease-out hover:border-l-[#C6402F] hover:bg-[#FDF2EF]/60 dark:border-gray-700 dark:border-l-gray-700 dark:bg-gray-800 dark:hover:border-l-[#FF5A42] dark:hover:bg-gray-700/50"
                 >
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-gray-500 transition-colors group-hover:bg-[#C6402F]/10 group-hover:text-[#C6402F] dark:bg-gray-700 dark:text-gray-400 dark:group-hover:bg-[#FF5A42]/15 dark:group-hover:text-[#FF5A42]">
                     <Lightbulb size={16} />

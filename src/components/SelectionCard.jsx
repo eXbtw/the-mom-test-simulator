@@ -4,7 +4,7 @@ export default function SelectionCard({ title, subtitle, icon: Icon, compact = f
       <button
         type="button"
         onClick={onSelect}
-        className="group relative flex w-full flex-col items-center gap-2.5 overflow-hidden rounded-lg border border-gray-200 bg-white px-4 py-5 text-center transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-[#C6402F] hover:shadow-[0_10px_24px_-14px_rgba(198,64,47,0.35)] focus-visible:-translate-y-0.5 focus-visible:border-[#C6402F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C6402F]/40 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-[#FF5A42] dark:hover:shadow-none dark:focus-visible:border-[#FF5A42] dark:focus-visible:ring-[#FF5A42]/40"
+        className="group relative flex w-full flex-col items-center gap-2 overflow-hidden rounded-lg border border-gray-200 bg-white px-4 py-4 text-center transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-[#C6402F] hover:shadow-[0_10px_24px_-14px_rgba(198,64,47,0.35)] focus-visible:-translate-y-0.5 focus-visible:border-[#C6402F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C6402F]/40 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-[#FF5A42] dark:hover:shadow-none dark:focus-visible:border-[#FF5A42] dark:focus-visible:ring-[#FF5A42]/40"
       >
         <span
           aria-hidden="true"
