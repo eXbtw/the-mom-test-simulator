@@ -9,12 +9,14 @@ const DIFFICULTY_STYLES = {
 
 export default function PersonaCard({ persona, isSaved, onToggleSave }) {
   return (
-    <div className="w-full rounded-xl border border-gray-200 bg-white p-5 text-left dark:border-gray-700 dark:bg-gray-800">
+    <div className="w-full rounded-lg border border-gray-200 bg-white p-5 text-left dark:border-gray-700 dark:bg-gray-800">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <PersonaAvatar categoryId={persona.category?.id} />
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-gray-100">{persona.name}</h3>
+            <h3 className="font-display text-base font-bold text-gray-900 dark:text-gray-100">
+              {persona.name}
+            </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">{persona.role}</p>
           </div>
         </div>

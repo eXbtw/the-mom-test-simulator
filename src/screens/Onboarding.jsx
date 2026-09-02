@@ -154,18 +154,19 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
         )}
 
         {step === 'branch' && (
-          <div className="animate-hero-in mb-6">
+          <div className="animate-hero-in mb-8">
             <TranscriptHero />
-            <p className="mx-auto mt-3 max-w-sm text-center text-sm italic text-gray-500 dark:text-gray-400">
-              «Вам соврут, если вы зададите плохой вопрос»
-              <span className="mt-1 block not-italic text-xs text-gray-400 dark:text-gray-500">
-                — Роб Фицпатрик, «Спроси маму»
-              </span>
-            </p>
-            <div className="mt-3 flex justify-center">
+            <div className="mx-auto mt-4 max-w-sm text-center">
+              <p className="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+                <span className="mr-0.5 font-display text-[#C6402F] dark:text-[#FF5A42]">”</span>
+                Вам соврут, если вы зададите плохой вопрос
+                <span className="mt-1 block text-xs text-gray-400 dark:text-gray-500">
+                  — Роб Фицпатрик, «Спроси маму»
+                </span>
+              </p>
               <TakesRotator />
             </div>
-            <div className="mt-3 flex items-center justify-center gap-3">
+            <div className="mt-4 flex items-center justify-center gap-3 border-t border-gray-200/70 pt-3 dark:border-gray-800">
               <button
                 type="button"
                 onClick={onShowRules}
@@ -198,11 +199,13 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
               <ArrowLeft size={18} />
             </button>
           )}
-          <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{STEP_TITLES[step]}</h2>
+          <h2 className="font-display text-[11px] font-bold uppercase tracking-[0.14em] text-gray-400 dark:text-gray-500">
+            {STEP_TITLES[step]}
+          </h2>
         </div>
 
         {step === 'branch' && (
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               {BRANCHES.map((branch, i) => (
                 <div
@@ -221,42 +224,54 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
               ))}
             </div>
 
-            <div className="animate-hero-in" style={{ animationDelay: `${100 + BRANCHES.length * 80}ms` }}>
-              <button
-                type="button"
-                onClick={() => setStep('challenge')}
-                className="group flex w-full items-center gap-3 rounded-xl border border-[#C6402F]/25 bg-[#FDF2EF] p-3 text-left transition-colors hover:border-[#C6402F] hover:bg-[#FBE3DD] dark:border-[#FF5A42]/25 dark:bg-gray-800 dark:hover:border-[#FF5A42] dark:hover:bg-gray-700"
-              >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#C6402F]/10 text-[#C6402F] dark:bg-[#FF5A42]/15 dark:text-[#FF5A42]">
-                  <Zap size={16} />
-                </span>
-                <span className="min-w-0">
-                  <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Задача дня</h3>
-                  <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
-                    Один фрагмент диалога, один ваш ответ
-                  </p>
-                </span>
-              </button>
+            <div className="flex items-center gap-3 px-1">
+              <span className="h-px flex-1 bg-gray-200 dark:bg-gray-800" />
+              <span className="font-display text-[10px] font-bold uppercase tracking-[0.18em] text-gray-400 dark:text-gray-600">
+                или
+              </span>
+              <span className="h-px flex-1 bg-gray-200 dark:bg-gray-800" />
             </div>
 
-            <div className="animate-hero-in" style={{ animationDelay: `${180 + BRANCHES.length * 80}ms` }}>
-              <button
-                type="button"
-                onClick={() => setStep('idea')}
-                className="group flex w-full items-center gap-3 rounded-xl border border-[#C6402F]/25 bg-[#FDF2EF] p-3 text-left transition-colors hover:border-[#C6402F] hover:bg-[#FBE3DD] dark:border-[#FF5A42]/25 dark:bg-gray-800 dark:hover:border-[#FF5A42] dark:hover:bg-gray-700"
-              >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#C6402F]/10 text-[#C6402F] dark:bg-[#FF5A42]/15 dark:text-[#FF5A42]">
-                  <Lightbulb size={16} />
-                </span>
-                <span className="min-w-0">
-                  <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                    Проверь свою идею
-                  </h3>
-                  <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
-                    Опишите продукт — подберём респондента под вашу аудиторию
-                  </p>
-                </span>
-              </button>
+            <div className="space-y-2">
+              <div className="animate-hero-in" style={{ animationDelay: `${100 + BRANCHES.length * 80}ms` }}>
+                <button
+                  type="button"
+                  onClick={() => setStep('challenge')}
+                  className="group flex w-full items-center gap-3 rounded-lg border-y border-r border-l-[3px] border-gray-200 border-l-gray-200 bg-white py-3 pl-3.5 pr-4 text-left transition-all duration-200 ease-out hover:border-l-[#C6402F] hover:bg-[#FDF2EF]/60 dark:border-gray-700 dark:border-l-gray-700 dark:bg-gray-800 dark:hover:border-l-[#FF5A42] dark:hover:bg-gray-700/50"
+                >
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-gray-500 transition-colors group-hover:bg-[#C6402F]/10 group-hover:text-[#C6402F] dark:bg-gray-700 dark:text-gray-400 dark:group-hover:bg-[#FF5A42]/15 dark:group-hover:text-[#FF5A42]">
+                    <Zap size={16} />
+                  </span>
+                  <span className="min-w-0">
+                    <h3 className="font-display text-sm font-bold text-gray-900 dark:text-gray-100">
+                      Задача дня
+                    </h3>
+                    <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+                      Один фрагмент диалога, один ваш ответ
+                    </p>
+                  </span>
+                </button>
+              </div>
+
+              <div className="animate-hero-in" style={{ animationDelay: `${180 + BRANCHES.length * 80}ms` }}>
+                <button
+                  type="button"
+                  onClick={() => setStep('idea')}
+                  className="group flex w-full items-center gap-3 rounded-lg border-y border-r border-l-[3px] border-gray-200 border-l-gray-200 bg-white py-3 pl-3.5 pr-4 text-left transition-all duration-200 ease-out hover:border-l-[#C6402F] hover:bg-[#FDF2EF]/60 dark:border-gray-700 dark:border-l-gray-700 dark:bg-gray-800 dark:hover:border-l-[#FF5A42] dark:hover:bg-gray-700/50"
+                >
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-gray-500 transition-colors group-hover:bg-[#C6402F]/10 group-hover:text-[#C6402F] dark:bg-gray-700 dark:text-gray-400 dark:group-hover:bg-[#FF5A42]/15 dark:group-hover:text-[#FF5A42]">
+                    <Lightbulb size={16} />
+                  </span>
+                  <span className="min-w-0">
+                    <h3 className="font-display text-sm font-bold text-gray-900 dark:text-gray-100">
+                      Проверь свою идею
+                    </h3>
+                    <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+                      Опишите продукт — подберём респондента под вашу аудиторию
+                    </p>
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -280,9 +295,7 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
 
             {savedForBranch.length > 0 && (
               <>
-                <p className="pt-2 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">
-                  Сохранённые
-                </p>
+                <p className="eyebrow pt-2">Сохранённые</p>
                 {savedForBranch.map((p) => (
                   <SavedPersonaRow
                     key={p.id}
@@ -312,7 +325,7 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
               onToggleSave={persona.id.startsWith('custom-') ? handleToggleSave : undefined}
             />
 
-            <label className="mt-3 flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
+            <label className="mt-3 flex cursor-pointer items-start gap-3 rounded-lg border border-gray-200 bg-white p-4 transition-colors hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-600">
               <input
                 type="checkbox"
                 checked={blindMode}
@@ -334,7 +347,7 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
             <button
               type="button"
               onClick={() => onStart(persona, blindMode)}
-              className="mt-3 w-full rounded-lg bg-[#C6402F] py-3 text-sm font-semibold text-white transition-colors hover:bg-[#A32F21]"
+              className="mt-3 w-full rounded-lg bg-[#C6402F] py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#A32F21] hover:shadow-lg active:translate-y-0"
             >
               Начать интервью
             </button>

@@ -20,14 +20,12 @@ export default function RulesGuide({ onExit }) {
           <ThemeToggle />
         </div>
 
-        <h1 className="mb-1 text-xl font-semibold text-gray-900 dark:text-gray-100">
-          Как читать реакции
-        </h1>
+        <h1 className="screen-title mb-1">Как читать реакции</h1>
         <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
           Четыре типа вопросов, на которых строится оценка в этом тренажёре.
         </p>
 
-        <blockquote className="mb-6 rounded-xl border border-[#C6402F]/25 bg-[#FDF2EF] px-5 py-4 dark:border-[#FF5A42]/25 dark:bg-gray-800">
+        <blockquote className="mb-6 rounded-lg border border-[#C6402F]/25 bg-[#FDF2EF] px-5 py-4 dark:border-[#FF5A42]/25 dark:bg-gray-800">
           <p className="font-hand text-2xl leading-snug text-[#C6402F] dark:text-[#FF5A42]">
             «Вам соврут, если вы зададите плохой вопрос»
           </p>
@@ -43,7 +41,7 @@ export default function RulesGuide({ onExit }) {
             return (
               <div
                 key={rule.id}
-                className="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-800"
+                className="rounded-lg border border-gray-200 bg-white p-5 transition-colors hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-600"
               >
                 <div className="flex items-center gap-2.5">
                   <span
@@ -55,7 +53,9 @@ export default function RulesGuide({ onExit }) {
                   >
                     <Icon size={16} />
                   </span>
-                  <h3 className="font-semibold text-gray-900 dark:text-gray-100">{rule.title}</h3>
+                  <h3 className="font-display text-sm font-bold text-gray-900 dark:text-gray-100">
+                    {rule.title}
+                  </h3>
                 </div>
                 <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">{rule.explanation}</p>
                 <div className="mt-3 space-y-1.5 text-sm">

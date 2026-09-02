@@ -1,13 +1,16 @@
-import { Trash2 } from 'lucide-react'
+import { Star, Trash2 } from 'lucide-react'
 
 export default function SavedPersonaRow({ persona, onSelect, onDelete }) {
   return (
-    <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-800">
-      <button type="button" onClick={onSelect} className="min-w-0 flex-1 text-left">
-        <h3 className="truncate text-sm font-semibold text-gray-900 dark:text-gray-100">
-          ⭐ {persona.name}
-        </h3>
-        <p className="truncate text-xs text-gray-500 dark:text-gray-400">{persona.role}</p>
+    <div className="surface-flag flex items-center gap-2 rounded-lg bg-white p-3 dark:bg-gray-800">
+      <button type="button" onClick={onSelect} className="flex min-w-0 flex-1 items-center gap-2 text-left">
+        <Star size={13} className="shrink-0 text-[#C6402F] dark:text-[#FF5A42]" fill="currentColor" />
+        <span className="min-w-0">
+          <h3 className="truncate font-display text-sm font-bold text-gray-900 dark:text-gray-100">
+            {persona.name}
+          </h3>
+          <p className="truncate text-xs text-gray-500 dark:text-gray-400">{persona.role}</p>
+        </span>
       </button>
       <button
         type="button"

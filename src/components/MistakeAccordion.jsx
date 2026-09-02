@@ -23,7 +23,9 @@ export default function MistakeAccordion({ mistakes }) {
               onClick={() => setOpenId(isOpen ? null : mistake.id)}
               className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left"
             >
-              <span className="text-sm font-medium text-gray-900 dark:text-gray-100">«{mistake.question}»</span>
+              <span className="font-display text-sm font-bold text-gray-900 dark:text-gray-100">
+                «{mistake.question}»
+              </span>
               <ChevronDown
                 size={18}
                 className={`shrink-0 text-gray-400 transition-transform dark:text-gray-500 ${isOpen ? 'rotate-180' : ''}`}

@@ -5,8 +5,8 @@ export default function WeaknessRadar({ history }) {
 
   if (!profile.ready) {
     return (
-      <div className="mb-4 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
-        <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Профиль слабых мест</h2>
+      <div className="mb-4 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
+        <h2 className="eyebrow">Профиль слабых мест</h2>
         <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
           Пройдите ещё несколько интервью — соберём статистику по вашим типичным ошибкам
         </p>
@@ -15,8 +15,8 @@ export default function WeaknessRadar({ history }) {
   }
 
   return (
-    <div className="mb-4 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
-      <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Профиль слабых мест</h2>
+    <div className="mb-4 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
+      <h2 className="eyebrow">Профиль слабых мест</h2>
       <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
         Доля вопросов такого типа среди {profile.totalEvaluated} оценённых реплик
       </p>

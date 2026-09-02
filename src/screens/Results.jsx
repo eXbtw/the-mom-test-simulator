@@ -42,16 +42,16 @@ export default function Results({ result, persona, onRestart, onShowRules, onSho
         </div>
 
         <header className="mb-6 shrink-0 text-center">
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="eyebrow justify-center inline-flex items-center gap-2">
             Итоги сессии
             {blindMode && (
-              <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+              <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold normal-case tracking-normal text-gray-600 dark:bg-gray-800 dark:text-gray-300">
                 <EyeOff size={10} />
                 Пройдено вслепую
               </span>
             )}
           </p>
-          <h1 className="mt-1 font-display text-3xl font-semibold text-gray-900 dark:text-gray-100">
+          <h1 className="mt-1 font-display text-3xl font-bold text-gray-900 dark:text-gray-100">
             {score}/100 · {grade}
           </h1>
           <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
@@ -74,7 +74,7 @@ export default function Results({ result, persona, onRestart, onShowRules, onSho
         </header>
 
         {newAchievements?.length > 0 && (
-          <div className="animate-take-fade-in mb-6 shrink-0 rounded-xl border border-[#C6402F]/25 bg-[#FDF2EF] p-3 text-center dark:border-[#FF5A42]/25 dark:bg-gray-800">
+          <div className="animate-take-fade-in mb-6 shrink-0 rounded-lg border border-[#C6402F]/25 bg-[#FDF2EF] p-3 text-center dark:border-[#FF5A42]/25 dark:bg-gray-800">
             <p className="flex items-center justify-center gap-1.5 text-sm font-semibold text-[#C6402F] dark:text-[#FF5A42]">
               <Sparkles size={14} />
               Новое достижение{newAchievements.length > 1 ? 'я' : ''}!
@@ -95,7 +95,7 @@ export default function Results({ result, persona, onRestart, onShowRules, onSho
 
         <section className="flex-1 overflow-y-auto">
           <div className="mb-3 flex items-center justify-between gap-3">
-            <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Разбор ошибок</h2>
+            <h2 className="eyebrow">Разбор ошибок</h2>
             <div className="flex shrink-0 items-center gap-3">
               <button
                 type="button"
@@ -117,9 +117,7 @@ export default function Results({ result, persona, onRestart, onShowRules, onSho
           </div>
           <MistakeAccordion mistakes={mistakes} />
 
-          <h2 className="mb-3 mt-6 text-sm font-semibold text-gray-700 dark:text-gray-300">
-            Экспорт отчёта
-          </h2>
+          <h2 className="eyebrow mb-3 mt-6">Экспорт отчёта</h2>
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
@@ -151,7 +149,7 @@ export default function Results({ result, persona, onRestart, onShowRules, onSho
         <button
           type="button"
           onClick={onRestart}
-          className="mt-6 w-full shrink-0 rounded-lg bg-[#C6402F] py-3 text-sm font-semibold text-white transition-colors hover:bg-[#A32F21]"
+          className="mt-6 w-full shrink-0 rounded-lg bg-[#C6402F] py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#A32F21] hover:shadow-lg active:translate-y-0"
         >
           Попробовать снова
         </button>

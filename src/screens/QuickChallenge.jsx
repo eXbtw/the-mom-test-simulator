@@ -66,7 +66,7 @@ export default function QuickChallenge({ onExit }) {
           <ThemeToggle />
         </div>
 
-        <h1 className="mb-1 flex items-center gap-2 text-xl font-semibold text-gray-900 dark:text-gray-100">
+        <h1 className="screen-title mb-1 flex items-center gap-2">
           <Zap size={20} className="text-[#C6402F] dark:text-[#FF5A42]" />
           Задача дня
         </h1>
@@ -84,7 +84,7 @@ export default function QuickChallenge({ onExit }) {
             <button
               type="button"
               onClick={loadFragment}
-              className="rounded-lg bg-[#C6402F] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#A32F21]"
+              className="rounded-lg bg-[#C6402F] px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#A32F21] hover:shadow-lg active:translate-y-0"
             >
               Повторить
             </button>
@@ -93,11 +93,11 @@ export default function QuickChallenge({ onExit }) {
 
         {(phase === 'answering' || phase === 'submitting') && fragment && (
           <>
-            <div className="animate-take-fade-in rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
-              <p className="text-xs font-medium uppercase tracking-wide text-gray-400 dark:text-gray-500">
-                {fragment.speaker}
+            <div className="animate-take-fade-in rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
+              <p className="eyebrow">{fragment.speaker}</p>
+              <p className="mt-2 font-display text-base text-gray-900 dark:text-gray-100">
+                «{fragment.line}»
               </p>
-              <p className="mt-2 text-base text-gray-900 dark:text-gray-100">«{fragment.line}»</p>
             </div>
 
             <form onSubmit={handleSubmit} className="mt-4 space-y-3">
@@ -107,12 +107,12 @@ export default function QuickChallenge({ onExit }) {
                 placeholder="Ваш вопрос в ответ…"
                 rows={3}
                 disabled={phase === 'submitting'}
-                className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 outline-none focus:border-[#C6402F] disabled:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-[#FF5A42] dark:disabled:bg-gray-900"
+                className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 outline-none transition-colors focus:border-[#C6402F] disabled:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-[#FF5A42] dark:disabled:bg-gray-900"
               />
               <button
                 type="submit"
                 disabled={!response.trim() || phase === 'submitting'}
-                className="w-full rounded-lg bg-[#C6402F] py-3 text-sm font-semibold text-white transition-colors hover:bg-[#A32F21] disabled:cursor-not-allowed disabled:opacity-50"
+                className="w-full rounded-lg bg-[#C6402F] py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#A32F21] hover:shadow-lg active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
               >
                 {phase === 'submitting' ? 'Оцениваю…' : 'Отправить ответ'}
               </button>
@@ -122,7 +122,7 @@ export default function QuickChallenge({ onExit }) {
 
         {phase === 'result' && feedback && (
           <div className="animate-take-fade-in space-y-4">
-            <div className="rounded-xl border border-gray-200 bg-white p-5 text-center dark:border-gray-700 dark:bg-gray-800">
+            <div className="rounded-lg border border-gray-200 bg-white p-5 text-center dark:border-gray-700 dark:bg-gray-800">
               <p className="font-display text-4xl font-bold text-gray-900 dark:text-gray-100">
                 {feedback.score}/100
               </p>
@@ -153,7 +153,7 @@ export default function QuickChallenge({ onExit }) {
               <button
                 type="button"
                 onClick={onExit}
-                className="flex-1 rounded-lg bg-[#C6402F] py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#A32F21]"
+                className="flex-1 rounded-lg bg-[#C6402F] py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#A32F21] hover:shadow-lg active:translate-y-0"
               >
                 На главный экран
               </button>

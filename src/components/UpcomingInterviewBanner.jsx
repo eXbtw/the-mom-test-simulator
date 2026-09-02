@@ -18,12 +18,12 @@ export default function UpcomingInterviewBanner({ record, tips = [], onPractice,
   else label = 'Как прошло интервью с клиентом?'
 
   return (
-    <div className="animate-hero-in mb-4 flex items-start gap-3 rounded-xl border border-[#C6402F]/25 bg-[#FDF2EF] p-3 dark:border-[#FF5A42]/25 dark:bg-gray-800">
+    <div className="animate-hero-in mb-4 flex items-start gap-3 rounded-lg border border-[#C6402F]/25 bg-[#FDF2EF] p-3 dark:border-[#FF5A42]/25 dark:bg-gray-800">
       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#C6402F]/10 text-[#C6402F] dark:bg-[#FF5A42]/15 dark:text-[#FF5A42]">
         <CalendarClock size={16} />
       </span>
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{label}</p>
+        <p className="font-display text-sm font-bold text-gray-900 dark:text-gray-100">{label}</p>
         {!isPast && (
           <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
             Потренируйтесь ещё раз перед разговором
@@ -42,7 +42,7 @@ export default function UpcomingInterviewBanner({ record, tips = [], onPractice,
       <button
         type="button"
         onClick={isPast ? onDismiss : onPractice}
-        className="shrink-0 rounded-lg bg-[#C6402F] px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-[#A32F21]"
+        className="shrink-0 rounded-lg bg-[#C6402F] px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#A32F21] hover:shadow-lg active:translate-y-0"
       >
         {isPast ? 'Готово' : 'Потренироваться'}
       </button>

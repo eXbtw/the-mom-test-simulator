@@ -147,7 +147,7 @@ export default function Workspace({ persona, blindMode, onFinish, onExit }) {
           </button>
           <PersonaAvatar categoryId={persona.category?.id} size="sm" />
           <div className="min-w-0">
-            <h1 className="font-display text-base font-semibold text-gray-900 dark:text-gray-100 md:text-lg">
+            <h1 className="font-display text-base font-bold text-gray-900 dark:text-gray-100 md:text-lg">
               The Mom Test Simulator
             </h1>
             <p className="truncate text-xs text-gray-500 dark:text-gray-400 md:text-sm">
@@ -165,7 +165,7 @@ export default function Workspace({ persona, blindMode, onFinish, onExit }) {
           <ThemeToggle />
           {started && (
             <span
-              className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${
+              className={`flex items-center gap-1 rounded-full px-2.5 py-1 font-display text-xs font-bold tabular-nums ${
                 secondsLeft === 0
                   ? 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300'
                   : secondsLeft <= 60
@@ -181,7 +181,7 @@ export default function Workspace({ persona, blindMode, onFinish, onExit }) {
             type="button"
             onClick={handleFinish}
             disabled={!started}
-            className="rounded-lg border border-gray-300 px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 md:px-3 md:text-sm"
+            className="rounded-lg border border-gray-300 px-2.5 py-1.5 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 md:px-3 md:text-sm"
           >
             Завершить интервью
           </button>
@@ -193,22 +193,18 @@ export default function Workspace({ persona, blindMode, onFinish, onExit }) {
 
         {!blindMode && (
           <aside className="flex shrink-0 items-center gap-4 border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-900 md:order-3 md:w-72 md:flex-col md:items-stretch md:gap-6 md:overflow-y-auto md:overflow-x-visible md:border-b-0 md:border-l md:bg-transparent md:p-6">
-            <div className="relative flex shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-white px-3 py-2 dark:border-gray-800 dark:bg-gray-900 md:w-full md:flex-col md:px-0 md:py-6">
+            <div className="relative flex shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white px-3 py-2 dark:border-gray-800 dark:bg-gray-900 md:w-full md:flex-col md:px-0 md:py-6">
               <ScoreDeltaPopup delta={scoreDelta} />
               <ScoreWidget score={score} />
             </div>
 
             <div className="min-w-0 flex-1 md:flex-none">
-              <h2 className="mb-2 hidden text-sm font-semibold text-gray-700 dark:text-gray-300 md:block">
-                Выявленные инсайты
-              </h2>
+              <h2 className="eyebrow mb-2 hidden md:block">Выявленные инсайты</h2>
               <InsightChips insights={insights} />
             </div>
 
             <div className="hidden md:block">
-              <h2 className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
-                Подсказка аудитора
-              </h2>
+              <h2 className="eyebrow mb-2">Подсказка аудитора</h2>
               <AlertBox alert={alert} />
             </div>
           </aside>
@@ -235,7 +231,7 @@ export default function Workspace({ persona, blindMode, onFinish, onExit }) {
               <button
                 type="button"
                 onClick={handleStart}
-                className="rounded-lg bg-[#C6402F] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#A32F21]"
+                className="rounded-lg bg-[#C6402F] px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#A32F21] hover:shadow-lg active:translate-y-0"
               >
                 Начать интервью
               </button>

@@ -42,7 +42,7 @@ export default function CustomPersonaForm({ branch, onGenerated }) {
       <button
         type="submit"
         disabled={!description.trim() || isLoading}
-        className="w-full rounded-lg bg-[#C6402F] py-3 text-sm font-semibold text-white transition-colors hover:bg-[#A32F21] disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full rounded-lg bg-[#C6402F] py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#A32F21] hover:shadow-lg active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
       >
         {isLoading ? 'Придумываю респондента…' : 'Сгенерировать респондента'}
       </button>

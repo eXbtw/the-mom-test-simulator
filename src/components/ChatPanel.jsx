@@ -26,8 +26,14 @@ export default function ChatPanel({ messages, onSend, isThinking }) {
         ))}
         {isThinking && (
           <div className="flex justify-start">
-            <div className="rounded-2xl rounded-bl-sm bg-[#C6402F]/70 px-4 py-2 text-sm text-white">
-              печатает…
+            <div className="flex items-center gap-1 rounded-2xl rounded-bl-sm bg-[#C6402F]/70 px-4 py-3 dark:bg-[#FF5A42]/70">
+              {[0, 1, 2].map((i) => (
+                <span
+                  key={i}
+                  className="animate-pulse-soft motion-reduce:animate-none h-1.5 w-1.5 rounded-full bg-white"
+                  style={{ animationDelay: `${i * 0.15}s` }}
+                />
+              ))}
             </div>
           </div>
         )}
@@ -38,11 +44,11 @@ export default function ChatPanel({ messages, onSend, isThinking }) {
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           placeholder="Задайте вопрос…"
-          className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[#C6402F] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-[#FF5A42]"
+          className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none transition-colors focus:border-[#C6402F] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-[#FF5A42]"
         />
         <button
           type="submit"
-          className="flex items-center justify-center rounded-lg bg-[#C6402F] px-4 py-2 text-white transition-colors hover:bg-[#A32F21] disabled:opacity-50"
+          className="flex items-center justify-center rounded-lg bg-[#C6402F] px-4 py-2 text-white shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#A32F21] hover:shadow-lg active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
           disabled={!draft.trim()}
         >
           <Send size={18} />

@@ -6,7 +6,9 @@ export default function PersonaContextPanel({ persona }) {
       <PersonaAvatar categoryId={persona.category?.id} size="lg" />
 
       <div>
-        <h2 className="font-semibold text-gray-900 dark:text-gray-100">{persona.name}</h2>
+        <h2 className="font-display text-base font-bold text-gray-900 dark:text-gray-100">
+          {persona.name}
+        </h2>
         <p className="text-sm text-gray-500 dark:text-gray-400">{persona.role}</p>
       </div>
 
@@ -20,17 +22,13 @@ export default function PersonaContextPanel({ persona }) {
       </div>
 
       <div>
-        <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">
-          Контекст
-        </h3>
+        <h3 className="eyebrow mb-1">Контекст</h3>
         <p className="text-sm text-gray-600 dark:text-gray-300">{persona.description}</p>
       </div>
 
       {persona.category?.label && (
         <div>
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">
-            Сфера
-          </h3>
+          <h3 className="eyebrow mb-1">Сфера</h3>
           <p className="text-sm text-gray-600 dark:text-gray-300">{persona.category.label}</p>
         </div>
       )}
