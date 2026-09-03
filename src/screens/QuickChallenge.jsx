@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import { ArrowLeft, Zap } from 'lucide-react'
+import { ArrowLeft, Flame, Zap } from 'lucide-react'
 import { fetchChallenge, fetchChallengeFeedback } from '../services/aiClient'
 import Logo from '../components/Logo'
 import ThemeToggle from '../components/ThemeToggle'
+import { getDailyChallengeState, recordDailyChallengeCompletion } from '../utils/storage'
 
 export default function QuickChallenge({ onExit }) {
   const [phase, setPhase] = useState('loading')
@@ -10,6 +11,7 @@ export default function QuickChallenge({ onExit }) {
   const [response, setResponse] = useState('')
   const [feedback, setFeedback] = useState(null)
   const [error, setError] = useState(null)
+  const [streak, setStreak] = useState(() => getDailyChallengeState().streak)
 
   const loadFragment = async () => {
     setPhase('loading')
@@ -38,6 +40,7 @@ export default function QuickChallenge({ onExit }) {
       const result = await fetchChallengeFeedback(fragment, trimmed)
       setFeedback(result)
       setPhase('result')
+      setStreak(recordDailyChallengeCompletion().streak)
     } catch (err) {
       setError(err.message)
       setPhase('error')
@@ -66,10 +69,18 @@ export default function QuickChallenge({ onExit }) {
           <ThemeToggle />
         </div>
 
-        <h1 className="screen-title mb-1 flex items-center gap-2">
-          <Zap size={20} className="text-[#C6402F] dark:text-[#FF5A42]" />
-          Задача дня
-        </h1>
+        <div className="mb-1 flex items-center justify-between gap-2">
+          <h1 className="screen-title flex items-center gap-2">
+            <Zap size={20} className="text-[#C6402F] dark:text-[#FF5A42]" />
+            Задача дня
+          </h1>
+          {streak > 0 && (
+            <span className="flex shrink-0 items-center gap-1 rounded-full bg-[#C6402F]/10 px-2 py-1 text-xs font-bold text-[#C6402F] dark:bg-[#FF5A42]/15 dark:text-[#FF5A42]">
+              <Flame size={13} />
+              {streak}
+            </span>
+          )}
+        </div>
         <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
           Прочитайте реплику и напишите вопрос, который раскроет реальную проблему.
         </p>

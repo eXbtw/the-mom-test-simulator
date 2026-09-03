@@ -1,12 +1,16 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   addHistoryEntry,
   clearHistory,
   clearUpcomingInterview,
+  getDailyChallengeState,
   getHistory,
   getSavedPersonas,
   getUpcomingInterview,
+  hasSeenChatHint,
   isPersonaSaved,
+  markChatHintSeen,
+  recordDailyChallengeCompletion,
   removeSavedPersona,
   savePersona,
   setUpcomingInterview,
@@ -14,6 +18,10 @@ import {
 
 beforeEach(() => {
   localStorage.clear()
+})
+
+afterEach(() => {
+  vi.useRealTimers()
 })
 
 describe('history', () => {
@@ -56,5 +64,53 @@ describe('upcoming interview', () => {
     expect(getUpcomingInterview()).toMatchObject({ date: '2026-01-01' })
     clearUpcomingInterview()
     expect(getUpcomingInterview()).toBeNull()
+  })
+})
+
+describe('chat hint', () => {
+  it('is unseen by default and stays seen once marked', () => {
+    expect(hasSeenChatHint()).toBe(false)
+    markChatHintSeen()
+    expect(hasSeenChatHint()).toBe(true)
+  })
+})
+
+describe('daily challenge streak', () => {
+  it('starts at zero with no completions', () => {
+    expect(getDailyChallengeState()).toEqual({ lastDate: null, streak: 0 })
+  })
+
+  it('starts a streak at 1 on first completion', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-03-10T12:00:00Z'))
+    const state = recordDailyChallengeCompletion()
+    expect(state).toEqual({ lastDate: '2026-03-10', streak: 1 })
+  })
+
+  it('does not double-count a second completion on the same day', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-03-10T12:00:00Z'))
+    recordDailyChallengeCompletion()
+    vi.setSystemTime(new Date('2026-03-10T20:00:00Z'))
+    const state = recordDailyChallengeCompletion()
+    expect(state).toEqual({ lastDate: '2026-03-10', streak: 1 })
+  })
+
+  it('increments the streak on a consecutive day', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-03-10T12:00:00Z'))
+    recordDailyChallengeCompletion()
+    vi.setSystemTime(new Date('2026-03-11T09:00:00Z'))
+    const state = recordDailyChallengeCompletion()
+    expect(state).toEqual({ lastDate: '2026-03-11', streak: 2 })
+  })
+
+  it('resets the streak to 1 after a skipped day', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-03-10T12:00:00Z'))
+    recordDailyChallengeCompletion()
+    vi.setSystemTime(new Date('2026-03-12T09:00:00Z'))
+    const state = recordDailyChallengeCompletion()
+    expect(state).toEqual({ lastDate: '2026-03-12', streak: 1 })
   })
 })

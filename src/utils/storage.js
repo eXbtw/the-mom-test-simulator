@@ -3,6 +3,8 @@
 const HISTORY_KEY = 'mom-test-history'
 const SAVED_PERSONAS_KEY = 'mom-test-saved-personas'
 const UPCOMING_INTERVIEW_KEY = 'mom-test-upcoming-interview'
+const CHAT_HINT_SEEN_KEY = 'mom-test-chat-hint-seen'
+const DAILY_CHALLENGE_KEY = 'mom-test-daily-challenge'
 const MAX_HISTORY = 50
 
 function readJson(key, fallback) {
@@ -64,4 +66,32 @@ export function setUpcomingInterview(record) {
 
 export function clearUpcomingInterview() {
   writeJson(UPCOMING_INTERVIEW_KEY, null)
+}
+
+export function hasSeenChatHint() {
+  return readJson(CHAT_HINT_SEEN_KEY, false)
+}
+
+export function markChatHintSeen() {
+  writeJson(CHAT_HINT_SEEN_KEY, true)
+}
+
+function todayStr() {
+  return new Date().toISOString().slice(0, 10)
+}
+
+export function getDailyChallengeState() {
+  return readJson(DAILY_CHALLENGE_KEY, { lastDate: null, streak: 0 })
+}
+
+export function recordDailyChallengeCompletion() {
+  const today = todayStr()
+  const state = getDailyChallengeState()
+  if (state.lastDate === today) return state
+
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10)
+  const streak = state.lastDate === yesterday ? state.streak + 1 : 1
+  const next = { lastDate: today, streak }
+  writeJson(DAILY_CHALLENGE_KEY, next)
+  return next
 }

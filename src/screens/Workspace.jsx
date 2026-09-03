@@ -8,12 +8,16 @@ import AlertBox from '../components/AlertBox'
 import PersonaAvatar from '../components/PersonaAvatar'
 import PersonaContextPanel from '../components/PersonaContextPanel'
 import ThemeToggle from '../components/ThemeToggle'
+import FirstChatHint from '../components/FirstChatHint'
 import { fetchEvaluation, fetchPersonaReply } from '../services/aiClient'
 import { gradeForScore } from '../utils/grading'
 import { computeTrust } from '../utils/trust'
+import { pickRandomMood } from '../data/moods'
+import { hasSeenChatHint, markChatHintSeen } from '../utils/storage'
 
 const MISTAKE_TYPES = new Set(['hypothetical', 'leading_question', 'pitching'])
 const TIMER_SECONDS = 10 * 60
+const GREETING = 'Алло, добрый день! Спасибо, что согласились уделить пару минут.'
 
 let messageId = 0
 const nextId = () => ++messageId
@@ -25,7 +29,10 @@ function formatTime(seconds) {
 }
 
 export default function Workspace({ persona, blindMode, onFinish, onExit }) {
+  const [mood] = useState(() => pickRandomMood())
+  const [phase, setPhase] = useState('idle')
   const [started, setStarted] = useState(false)
+  const [showHint, setShowHint] = useState(false)
   const [messages, setMessages] = useState([])
   const [score, setScore] = useState(50)
   const [scoreDelta, setScoreDelta] = useState(null)
@@ -46,8 +53,23 @@ export default function Workspace({ persona, blindMode, onFinish, onExit }) {
   }, [started])
 
   const handleStart = () => {
-    setMessages([{ id: nextId(), role: 'ai', text: persona.openingLine }])
-    setStarted(true)
+    setPhase('connecting')
+    setTimeout(() => {
+      setPhase('chatting')
+      setMessages([{ id: nextId(), role: 'user', text: GREETING }])
+      setIsThinking(true)
+      setTimeout(() => {
+        setIsThinking(false)
+        setMessages((prev) => [...prev, { id: nextId(), role: 'ai', text: persona.openingLine }])
+        setStarted(true)
+        if (!hasSeenChatHint()) setShowHint(true)
+      }, 1000)
+    }, 1100)
+  }
+
+  const handleDismissHint = () => {
+    markChatHintSeen()
+    setShowHint(false)
   }
 
   const handleSend = async (text) => {
@@ -60,7 +82,7 @@ export default function Workspace({ persona, blindMode, onFinish, onExit }) {
     try {
       const [result, reply] = await Promise.all([
         fetchEvaluation(text),
-        fetchPersonaReply(persona, history, text, trust),
+        fetchPersonaReply(persona, history, text, trust, mood.id),
       ])
 
       if (result) {
@@ -151,7 +173,7 @@ export default function Workspace({ persona, blindMode, onFinish, onExit }) {
               The Mom Test Simulator
             </h1>
             <p className="truncate text-xs text-gray-500 dark:text-gray-400 md:text-sm">
-              {persona.role} · {persona.difficulty} · {persona.trafficSource.label}
+              {persona.role} · {persona.difficulty} · {mood.label} · {persona.trafficSource.label}
               {blindMode && (
                 <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold text-gray-600 dark:bg-gray-800 dark:text-gray-300">
                   <EyeOff size={10} />
@@ -219,8 +241,22 @@ export default function Workspace({ persona, blindMode, onFinish, onExit }) {
             </div>
           )}
 
-          {started ? (
-            <ChatPanel messages={messages} onSend={handleSend} isThinking={isThinking} />
+          {phase === 'chatting' ? (
+            <ChatPanel
+              messages={messages}
+              onSend={handleSend}
+              isThinking={isThinking}
+              inputDisabled={!started}
+              hint={showHint ? <FirstChatHint onDismiss={handleDismissHint} /> : null}
+            />
+          ) : phase === 'connecting' ? (
+            <div className="flex h-full flex-col items-center justify-center gap-4 px-8 text-center">
+              <div className="relative flex items-center justify-center">
+                <span className="animate-pulse-soft motion-reduce:animate-none absolute h-16 w-16 rounded-full border-2 border-[#C6402F]/40 dark:border-[#FF5A42]/40" />
+                <PersonaAvatar categoryId={persona.category?.id} size="lg" />
+              </div>
+              <p className="font-display text-sm text-gray-500 dark:text-gray-400">Соединяем…</p>
+            </div>
           ) : (
             <div className="flex h-full flex-col items-center justify-center gap-4 px-8 text-center">
               <p className="text-sm text-gray-500 dark:text-gray-400">

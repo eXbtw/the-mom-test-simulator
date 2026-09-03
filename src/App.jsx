@@ -8,6 +8,7 @@ import SessionHistory from './screens/SessionHistory'
 import TransitionScreen from './components/TransitionScreen'
 import { addHistoryEntry, getHistory } from './utils/storage'
 import { computeAchievements } from './utils/achievements'
+import { PERSONAS } from './data/personas'
 
 const TRANSITION_MS = 550
 
@@ -17,6 +18,7 @@ function App() {
   const [result, setResult] = useState(null)
   const [overlay, setOverlay] = useState(null)
   const [transition, setTransition] = useState(null)
+  const [campaign, setCampaign] = useState(null)
 
   const runTransition = (message, applyChange) => {
     setTransition({ message })
@@ -30,6 +32,15 @@ function App() {
     runTransition('Готовим интервью…', () => {
       setPersona(selectedPersona)
       setBlindMode(isBlindMode)
+    })
+  }
+
+  const handleStartCampaign = (branchId) => {
+    const queue = PERSONAS.filter((p) => p.branch === branchId)
+    runTransition('Готовим марафон интервью…', () => {
+      setCampaign({ queue, index: 0, results: [] })
+      setPersona(queue[0])
+      setBlindMode(false)
     })
   }
 
@@ -59,7 +70,31 @@ function App() {
         (a, i) => a.unlocked && !beforeAchievements[i].unlocked,
       )
 
+      if (campaign) {
+        setCampaign((c) => ({
+          ...c,
+          results: [
+            ...c.results,
+            {
+              personaName: persona.name,
+              score: sessionResult.score,
+              insightsRevealed: sessionResult.insightsRevealed,
+              insightsTotal: sessionResult.insightsTotal,
+            },
+          ],
+        }))
+      }
+
       setResult({ ...sessionResult, newAchievements })
+    })
+  }
+
+  const handleNextCampaignPersona = () => {
+    const nextIndex = campaign.index + 1
+    runTransition('Следующий респондент…', () => {
+      setCampaign((c) => ({ ...c, index: nextIndex }))
+      setPersona(campaign.queue[nextIndex])
+      setResult(null)
     })
   }
 
@@ -67,6 +102,7 @@ function App() {
     runTransition('Возвращаемся на главный…', () => {
       setPersona(null)
       setResult(null)
+      setCampaign(null)
     })
   }
 
@@ -86,6 +122,7 @@ function App() {
     screen = (
       <Onboarding
         onStart={handleStart}
+        onStartCampaign={handleStartCampaign}
         onShowRules={() => setOverlay('rules')}
         onShowHistory={() => setOverlay('history')}
       />
@@ -96,6 +133,8 @@ function App() {
       <Results
         result={result}
         persona={persona}
+        campaign={campaign}
+        onNextCampaignPersona={handleNextCampaignPersona}
         onRestart={handleRestart}
         onShowRules={() => setOverlay('rules')}
         onShowHistory={() => setOverlay('history')}

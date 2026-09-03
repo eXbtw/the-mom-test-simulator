@@ -14,13 +14,26 @@ function trustDescription(trust) {
   return 'Ты почти закрылся: слишком много наводящих вопросов или попыток продать решение. Отвечаешь односложно и уклончиво, хочешь поскорее закончить разговор, но остаёшься вежливым.'
 }
 
-function buildSystemInstruction(persona, trust) {
+const MOOD_PROMPTS = {
+  rushed:
+    'Ты сегодня очень занят(а) и спешишь — отвечай короткими фразами (1 предложение) и периодически намекай, что у тебя мало времени.',
+  friendly:
+    'Ты сегодня в хорошем настроении, открыт(а) и дружелюбен(на) — охотно поддерживаешь разговор, хотя это не отменяет правил ниже про наводящие и гипотетические вопросы.',
+  skeptical:
+    'Ты сегодня настроен(а) скептично и сдержанно — не спешишь раскрываться, отвечаешь осторожно, пока не почувствуешь, что вопрос действительно по делу.',
+  agreeable:
+    'Ты сегодня очень вежливый(ая) и неконфликтный(ая) — склонен(на) соглашаться и хвалить всё подряд из вежливости, даже когда это не совсем искренне, и сам(а) не осознаёшь это как проблему.',
+}
+
+function buildSystemInstruction(persona, trust, moodId) {
+  const moodPrompt = MOOD_PROMPTS[moodId]
+
   return `Ты — ${persona.name}, ${persona.role}. ${persona.description}
 
 Твой настрой в начале разговора: ${persona.trafficSource?.prompt ?? ''}
 
 Насколько легко ты раскрываешься: ${persona.difficultyPrompt ?? ''}
-
+${moodPrompt ? `\nТвоё сиюминутное настроение сегодня: ${moodPrompt}\n` : ''}
 Текущий уровень доверия к интервьюеру (0-100): ${trust}. ${trustDescription(trust)}
 
 Правила поведения:
@@ -42,7 +55,7 @@ export default async function handler(req, res) {
     return
   }
 
-  const { persona, history, message, trust } = req.body ?? {}
+  const { persona, history, message, trust, moodId } = req.body ?? {}
   if (!persona || !message) {
     res.status(400).json({ error: 'persona and message are required' })
     return
@@ -60,7 +73,7 @@ export default async function handler(req, res) {
     ]
 
     const reply = await callGemini({
-      systemInstruction: buildSystemInstruction(persona, clampedTrust),
+      systemInstruction: buildSystemInstruction(persona, clampedTrust, moodId),
       contents,
     })
 

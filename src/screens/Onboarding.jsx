@@ -1,5 +1,17 @@
 import { useState } from 'react'
-import { ArrowLeft, BookOpen, Briefcase, EyeOff, History, Lightbulb, PenLine, UserRound, Zap } from 'lucide-react'
+import {
+  ArrowLeft,
+  BookOpen,
+  Briefcase,
+  EyeOff,
+  Flame,
+  History,
+  Lightbulb,
+  ListChecks,
+  PenLine,
+  UserRound,
+  Zap,
+} from 'lucide-react'
 import { BRANCHES, PERSONAS } from '../data/personas'
 import SelectionCard from '../components/SelectionCard'
 import PersonaCard from '../components/PersonaCard'
@@ -14,6 +26,7 @@ import TakesRotator from '../components/TakesRotator'
 import QuickChallenge from './QuickChallenge'
 import {
   clearUpcomingInterview,
+  getDailyChallengeState,
   getHistory,
   getSavedPersonas,
   getUpcomingInterview,
@@ -28,6 +41,7 @@ const STEP_TITLES = {
   category: 'Выберите направление',
   custom: 'Своя сфера',
   idea: 'Проверь свою идею',
+  marathon: 'Марафон — какой блок?',
   confirm: 'Ваш респондент',
 }
 
@@ -36,7 +50,7 @@ const BRANCH_ICONS = {
   b2c: UserRound,
 }
 
-export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
+export default function Onboarding({ onStart, onStartCampaign, onShowRules, onShowHistory }) {
   const [step, setStep] = useState('branch')
   const [branchId, setBranchId] = useState(null)
   const [persona, setPersona] = useState(null)
@@ -45,6 +59,7 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
   const [savedPersonas, setSavedPersonas] = useState(() => getSavedPersonas())
   const [isSaved, setIsSaved] = useState(false)
   const [ideaPrefill, setIdeaPrefill] = useState('')
+  const [challengeStreak] = useState(() => getDailyChallengeState().streak)
   const [upcomingInterview, setUpcomingInterviewState] = useState(() => {
     const record = getUpcomingInterview()
     if (!record) return null
@@ -123,7 +138,7 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
   }
 
   const goBack = () => {
-    if (step === 'category' || step === 'custom' || step === 'idea') {
+    if (step === 'category' || step === 'custom' || step === 'idea' || step === 'marathon') {
       setBranchId(null)
       setStep('branch')
     } else if (step === 'confirm') {
@@ -242,7 +257,7 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-gray-500 transition-colors group-hover:bg-[#C6402F]/10 group-hover:text-[#C6402F] dark:bg-gray-700 dark:text-gray-400 dark:group-hover:bg-[#FF5A42]/15 dark:group-hover:text-[#FF5A42]">
                     <Zap size={16} />
                   </span>
-                  <span className="min-w-0">
+                  <span className="min-w-0 flex-1">
                     <h3 className="font-display text-sm font-bold text-gray-900 dark:text-gray-100">
                       Задача дня
                     </h3>
@@ -250,6 +265,12 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
                       Один фрагмент диалога, один ваш ответ
                     </p>
                   </span>
+                  {challengeStreak > 0 && (
+                    <span className="flex shrink-0 items-center gap-1 rounded-full bg-[#C6402F]/10 px-2 py-1 text-xs font-bold text-[#C6402F] dark:bg-[#FF5A42]/15 dark:text-[#FF5A42]">
+                      <Flame size={13} />
+                      {challengeStreak}
+                    </span>
+                  )}
                 </button>
               </div>
 
@@ -272,6 +293,47 @@ export default function Onboarding({ onStart, onShowRules, onShowHistory }) {
                   </span>
                 </button>
               </div>
+
+              <div className="animate-hero-in" style={{ animationDelay: `${260 + BRANCHES.length * 80}ms` }}>
+                <button
+                  type="button"
+                  onClick={() => setStep('marathon')}
+                  className="group flex w-full items-center gap-3 rounded-lg border-y border-r border-l-[3px] border-gray-200 border-l-gray-200 bg-white py-2.5 pl-3.5 pr-4 text-left transition-all duration-200 ease-out hover:border-l-[#C6402F] hover:bg-[#FDF2EF]/60 dark:border-gray-700 dark:border-l-gray-700 dark:bg-gray-800 dark:hover:border-l-[#FF5A42] dark:hover:bg-gray-700/50"
+                >
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-gray-500 transition-colors group-hover:bg-[#C6402F]/10 group-hover:text-[#C6402F] dark:bg-gray-700 dark:text-gray-400 dark:group-hover:bg-[#FF5A42]/15 dark:group-hover:text-[#FF5A42]">
+                    <ListChecks size={16} />
+                  </span>
+                  <span className="min-w-0">
+                    <h3 className="font-display text-sm font-bold text-gray-900 dark:text-gray-100">
+                      Марафон интервью
+                    </h3>
+                    <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+                      Три респондента подряд — как в настоящем кастдеве
+                    </p>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {step === 'marathon' && (
+          <div className="space-y-3">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Пройдёте всех респондентов блока подряд, без выбора между ними. В конце — сводка по всем
+              интервью сразу.
+            </p>
+            <div className="grid grid-cols-2 gap-2.5">
+              {BRANCHES.map((branch) => (
+                <SelectionCard
+                  key={branch.id}
+                  compact
+                  title={branch.label}
+                  subtitle={branch.description}
+                  icon={BRANCH_ICONS[branch.id]}
+                  onSelect={() => onStartCampaign(branch.id)}
+                />
+              ))}
             </div>
           </div>
         )}

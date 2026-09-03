@@ -1,18 +1,32 @@
 import { useState } from 'react'
-import { BookOpen, Copy, Download, EyeOff, History, Home, Printer, Sparkles } from 'lucide-react'
+import { ArrowRight, BookOpen, Copy, Download, EyeOff, History, Home, ListChecks, Printer, Sparkles } from 'lucide-react'
 import MistakeAccordion from '../components/MistakeAccordion'
 import ThemeToggle from '../components/ThemeToggle'
 import PrintableReport from '../components/PrintableReport'
 import { buildMarkdownReport, downloadTextFile } from '../utils/report'
 import { getHistory } from '../utils/storage'
 
-export default function Results({ result, persona, onRestart, onShowRules, onShowHistory }) {
+export default function Results({
+  result,
+  persona,
+  campaign,
+  onNextCampaignPersona,
+  onRestart,
+  onShowRules,
+  onShowHistory,
+}) {
   const { score, grade, mistakes, insightsRevealed, insightsTotal, blindMode, newAchievements } = result
   const [copied, setCopied] = useState(false)
 
   const sameRespondent = getHistory().filter((h) => h.personaId === persona.id)
   const previousAttempt = sameRespondent[1]
   const delta = previousAttempt ? score - previousAttempt.score : null
+
+  const isCampaign = Boolean(campaign)
+  const isLastInCampaign = isCampaign && campaign.index === campaign.queue.length - 1
+  const campaignAvg = isCampaign
+    ? Math.round(campaign.results.reduce((sum, r) => sum + r.score, 0) / campaign.results.length)
+    : 0
 
   const handleCopy = async () => {
     const markdown = buildMarkdownReport({ persona, result })
@@ -42,6 +56,12 @@ export default function Results({ result, persona, onRestart, onShowRules, onSho
         </div>
 
         <header className="mb-6 shrink-0 text-center">
+          {isCampaign && (
+            <p className="mb-1.5 flex items-center justify-center gap-1.5 text-xs font-medium text-gray-400 dark:text-gray-500">
+              <ListChecks size={12} />
+              Марафон · респондент {campaign.index + 1} из {campaign.queue.length}
+            </p>
+          )}
           <p className="eyebrow justify-center inline-flex items-center gap-2">
             Итоги сессии
             {blindMode && (
@@ -89,6 +109,24 @@ export default function Results({ result, persona, onRestart, onShowRules, onSho
                   </div>
                 )
               })}
+            </div>
+          </div>
+        )}
+
+        {isLastInCampaign && (
+          <div className="animate-take-fade-in mb-6 shrink-0 rounded-lg border border-[#C6402F]/25 bg-[#FDF2EF] p-4 dark:border-[#FF5A42]/25 dark:bg-gray-800">
+            <h2 className="eyebrow">Итоги марафона</h2>
+            <p className="mt-1.5 text-sm text-gray-700 dark:text-gray-300">
+              Средний счёт <strong className="font-display">{campaignAvg}</strong>/100 по{' '}
+              {campaign.results.length} респондентам
+            </p>
+            <div className="mt-3 space-y-1.5 border-t border-[#C6402F]/15 pt-3 dark:border-[#FF5A42]/15">
+              {campaign.results.map((r, i) => (
+                <div key={i} className="flex items-center justify-between text-sm">
+                  <span className="text-gray-600 dark:text-gray-400">{r.personaName}</span>
+                  <span className="font-display font-bold text-gray-900 dark:text-gray-100">{r.score}</span>
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -146,13 +184,24 @@ export default function Results({ result, persona, onRestart, onShowRules, onSho
           </div>
         </section>
 
-        <button
-          type="button"
-          onClick={onRestart}
-          className="mt-6 w-full shrink-0 rounded-lg bg-[#C6402F] py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#A32F21] hover:shadow-lg active:translate-y-0"
-        >
-          Попробовать снова
-        </button>
+        {isCampaign && !isLastInCampaign ? (
+          <button
+            type="button"
+            onClick={onNextCampaignPersona}
+            className="mt-6 flex w-full shrink-0 items-center justify-center gap-1.5 rounded-lg bg-[#C6402F] py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#A32F21] hover:shadow-lg active:translate-y-0"
+          >
+            Следующий респондент ({campaign.index + 2}/{campaign.queue.length})
+            <ArrowRight size={16} />
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={onRestart}
+            className="mt-6 w-full shrink-0 rounded-lg bg-[#C6402F] py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#A32F21] hover:shadow-lg active:translate-y-0"
+          >
+            {isCampaign ? 'Завершить марафон' : 'Попробовать снова'}
+          </button>
+        )}
       </div>
 
       <PrintableReport persona={persona} result={result} />

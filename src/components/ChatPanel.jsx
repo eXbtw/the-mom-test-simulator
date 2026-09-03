@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Send } from 'lucide-react'
 import MessageBubble from './MessageBubble'
 
-export default function ChatPanel({ messages, onSend, isThinking }) {
+export default function ChatPanel({ messages, onSend, isThinking, inputDisabled = false, hint }) {
   const [draft, setDraft] = useState('')
   const scrollRef = useRef(null)
 
@@ -38,18 +38,20 @@ export default function ChatPanel({ messages, onSend, isThinking }) {
           </div>
         )}
       </div>
+      {hint}
       <form onSubmit={handleSubmit} className="flex gap-2 border-t border-gray-200 p-3 dark:border-gray-800">
         <input
           type="text"
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
-          placeholder="Задайте вопрос…"
-          className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none transition-colors focus:border-[#C6402F] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-[#FF5A42]"
+          placeholder={inputDisabled ? 'Дождитесь ответа респондента…' : 'Задайте вопрос…'}
+          disabled={inputDisabled}
+          className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none transition-colors focus:border-[#C6402F] disabled:bg-gray-50 disabled:text-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-[#FF5A42] dark:disabled:bg-gray-900"
         />
         <button
           type="submit"
           className="flex items-center justify-center rounded-lg bg-[#C6402F] px-4 py-2 text-white shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#A32F21] hover:shadow-lg active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
-          disabled={!draft.trim()}
+          disabled={inputDisabled || !draft.trim()}
         >
           <Send size={18} />
         </button>
